@@ -49,4 +49,8 @@ dependencies {
     // the CameraX Extensions library
     implementation("androidx.camera:camera-extensions:${camerax_version}")
 
+    // tessaact
+    // https://stackoverflow.com/questions/7710123/how-can-i-use-tesseract-in-android
+    implementation("com.rmtheis:tess-two:10.2.0")
+
 }
