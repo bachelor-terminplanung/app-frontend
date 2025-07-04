@@ -51,6 +51,10 @@ dependencies {
 
     // tessaact
     // https://stackoverflow.com/questions/7710123/how-can-i-use-tesseract-in-android
-    implementation("com.rmtheis:tess-two:10.2.0")
+    implementation("com.rmtheis:tess-two:9.1.0")
+
+    // Google Cloud Vision API
+    implementation ("com.google.android.gms:play-services-vision:20.1.3")
+    implementation ("com.google.mlkit:text-recognition:16.0.0-beta3")
 
 }
