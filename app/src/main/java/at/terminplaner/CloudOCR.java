@@ -1,4 +1,56 @@
 package at.terminplaner;
 
-public class CloudOCR {
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.IOException;
+
+public class CloudOCR extends AppCompatActivity {
+
+    private static final int SELECT_IMAGE = 1;
+    private ImageView imageView;
+    private TextView resultText;
+    private String apiKey = "";
+
+    @SuppressLint("MissingInflatedId")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cloudocr);
+        imageView = findViewById(R.id.imageView);
+        resultText = findViewById(R.id.resultText);
+
+        Button selectImage = findViewById(R.id.selectImage);
+        selectImage.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, SELECT_IMAGE);
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent image) {
+        super.onActivityResult(requestCode, resultCode, image);
+
+        if (requestCode == SELECT_IMAGE && resultCode == RESULT_OK && image != null) {
+            Uri imageUri = image.getData();
+            imageView.setImageURI(imageUri);
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                VisionApiHelper.recognizeHandwriting(bitmap, apiKey, result -> runOnUiThread(() -> resultText.setText(result)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
