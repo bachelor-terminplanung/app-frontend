@@ -19,7 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class VisionApiHelper {
@@ -122,15 +122,14 @@ public class VisionApiHelper {
         return null;
     }
 
-    public static void sendEvent(String description) {
+    public static void sendEvent(String description, String date, String time) {
         try {
             URL url = new URL("http://192.168.10.28:3000/events");
 
-            // JSON-Objekt erstellen
             JSONObject json = new JSONObject();
             json.put("user_id", 1);
-            json.put("event_date", "2025-07-13");
-            json.put("start_time", "10:00");
+            json.put("event_date", date);
+            json.put("start_time", time);
             json.put("description", description);
             json.put("duration", 60);
             json.put("is_repeating", false);
@@ -168,13 +167,19 @@ public class VisionApiHelper {
             e.printStackTrace();
         }
     }
+
     public static void recognizeHandwriting(Bitmap bitmap, String apiKey, Consumer<String> callback) {
         new Thread(() -> {
             try {
                 JSONObject requestObj =  preparePayload(bitmap);
                 String detectedText = getTextFromGoogleVisionApi(requestObj, apiKey);
 
-                sendEvent(detectedText);
+                List<String> dates = DateTimeRecognizer.getRecognicedDatesOrTimes(detectedText, DateTimeRecognizer.Type.DATE);
+                List<String> times = DateTimeRecognizer.getRecognicedDatesOrTimes(detectedText, DateTimeRecognizer.Type.TIME);
+                Log.d("dates", dates.get(0));
+                Log.d("times", times.get(0));
+
+                sendEvent(detectedText, dates.get(0), times.get(0));
 
                 if (detectedText != null) {
                     callback.accept(detectedText);
