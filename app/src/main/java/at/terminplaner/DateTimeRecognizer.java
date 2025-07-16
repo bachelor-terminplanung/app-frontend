@@ -2,6 +2,7 @@ package at.terminplaner;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -73,6 +74,29 @@ public class DateTimeRecognizer {
         }
     }
     private static String formatDate(String date) {
+        List<String> monthNamePatterns = Arrays.asList(
+                "d. MMMM yyyy",  // 20. März 2020
+                "d MMMM yyyy",   // 20 März 2020
+                "d. MMMM",       // 16. Juni
+                "d MMMM"         // 16 Juni
+        );
+
+        for (String pattern : monthNamePatterns) {
+            try {
+                String adjusted = date.trim().replace(",","").trim();
+
+                if (!pattern.contains("yyyy")) {
+                    adjusted += " " + LocalDate.now().getYear();
+                    pattern += " yyyy";
+                }
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+                LocalDate parsedDate = LocalDate.parse(adjusted, formatter);
+                return parsedDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+            } catch (DateTimeParseException ignored) {
+            }
+        }
+
         List<String> patterns = Arrays.asList(
                 "yyyy-MM-dd", "dd.MM.yyyy", "dd-MM-yyyy", "dd/MM/yyyy",
                 "d.M.yyyy", "d-M-yyyy", "d/M/yyyy",
@@ -129,7 +153,7 @@ public class DateTimeRecognizer {
         return null;
     }
     private static String formatTime(String time) {
-        // Normalize input: trim and replace multiple spaces
+
         time = time.trim().replaceAll("\\s+", " ");
 
         // "4.30 Uhr" → "4:30"
