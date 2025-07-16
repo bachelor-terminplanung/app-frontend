@@ -55,7 +55,13 @@ public class DateTimeRecognizer {
 
         return results;
     }
-
+    private static String tryFormat(String input, Type type) {
+        if (type == Type.DATE) {
+            return formatDate(input);
+        } else {
+            return "time";
+        }
+    }
     private static String formatDate (String date) {
         // d, M can either be 1 or 2 numbers
         List<String> patterns = Arrays.asList(
