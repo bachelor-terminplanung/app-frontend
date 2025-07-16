@@ -48,9 +48,15 @@ public class DateTimeRecognizer {
             );
         }
 
-        Matcher matchedResult = pattern.matcher(detectedText);
-        while (matchedResult.find()) {
-            results.add(matchedResult.group());
+        Matcher matcher = pattern.matcher(detectedText);
+        while (matcher.find()) {
+            String raw = matcher.group();
+            String formatted = tryFormat(raw, type);
+            if (formatted != null) {
+                results.add(formatted);
+            } else {
+                results.add("invalid: " + raw);
+            }
         }
 
         return results;
