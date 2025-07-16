@@ -87,6 +87,11 @@ public class DateTimeRecognizer {
 
                 // there is no year -> add current year
                 if (pattern.equals("d.M") || pattern.equals("d-M") || pattern.equals("d/M")) {
+
+                    if (isValidDayAndMonth(date) == 1) {
+                        return null;
+                    }
+
                     adjustedDate += "." + LocalDate.now().getYear();
                     pattern += ".yyyy";
                 }
@@ -94,6 +99,11 @@ public class DateTimeRecognizer {
                 // add century e.g. 22 -> 2022
                 if (pattern.equals("d.M.yy") || pattern.equals("d-M-yy") || pattern.equals("d/M/yy")
                         || pattern.equals("dd.MM.yy") || pattern.equals("dd-MM-yy") || pattern.equals("dd/MM/yy")) {
+
+                    if (isValidDayAndMonth(date) == 1) {
+                        return null;
+                    }
+
                     String[] parts = date.split("[.\\-/]");
                     int year = Integer.parseInt(parts[2]);
                     int fullYear = (LocalDate.now().getYear() / 100) * 100 + year;
@@ -159,4 +169,14 @@ public class DateTimeRecognizer {
         return null;
     }
 
+    private static int isValidDayAndMonth (String date) {
+        String[] parts = date.split("[.\\-/]");
+        int day = Integer.parseInt(parts[0]);
+        int month = Integer.parseInt(parts[1]);
+
+        if (day < 1 || day > 31 || month < 1 || month > 12) {
+            return 1;
+        }
+        return 0;
+    }
 }
