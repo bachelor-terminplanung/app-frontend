@@ -40,10 +40,14 @@ public class DateTimeRecognizer {
             );
         } else if (type == Type.TIME) {
             pattern = Pattern.compile(
-                    "\\b(?<!\\d[\\.\\-/])(?:[0-1]?\\d|2[0-3])(?:" +
-                            "[:\\^h]\\d{2}" +
-                            "|\\.\\d{2}\\s?Uhr" +
-                            "|\\sUhr(?:\\s\\d{1,2})?" +
+                    "\\b" +
+                            "(?<!\\d[\\.\\-/])" + // there is no ".", "-" and "/" allowed before
+                            "(?:[0-1]?\\d|2[0-3])" + // hours from 0 to 23
+                            "(?:" + // for next block
+                            "[:\\^h]" + // followed by ":", "^", or "h"
+                            "\\d{2}" + // 2 digits for minutes
+                            "|\\.\\d{2}\\s?Uhr" + // "." with 2 digits and optional space before Uhr (e.g. 4.30 Uhr)
+                            "|\\sUhr(?:\\s\\d{1,2})?" + // space Uhr and optional space and 1-2 digits
                             ")\\b"
             );
         }
