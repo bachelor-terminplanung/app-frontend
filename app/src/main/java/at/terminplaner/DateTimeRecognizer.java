@@ -65,13 +65,14 @@ public class DateTimeRecognizer {
         if (type == Type.DATE) {
             return formatDate(input);
         } else {
-            return "time";
+            return formatTime(input);
         }
     }
-    private static String formatDate (String date) {
-        // d, M can either be 1 or 2 numbers
+    private static String formatDate(String date) {
         List<String> patterns = Arrays.asList(
-                "yyyy-MM-dd", "d.M.yyyy", "d-M-yyyy", "d/M/yyyy",
+                "yyyy-MM-dd", "dd.MM.yyyy", "dd-MM-yyyy", "dd/MM/yyyy",
+                "d.M.yyyy", "d-M-yyyy", "d/M/yyyy",
+                "dd.MM.yy", "dd-MM-yy", "dd/MM/yy",
                 "d.M.yy", "d-M-yy", "d/M/yy",
                 "d.M", "d-M", "d/M"
         );
@@ -79,37 +80,50 @@ public class DateTimeRecognizer {
         for (String pattern : patterns) {
             try {
                 String adjustedDate = date;
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 
                 // there is no year -> add current year
                 if (pattern.equals("d.M") || pattern.equals("d-M") || pattern.equals("d/M")) {
                     adjustedDate += "." + LocalDate.now().getYear();
-                    formatter = DateTimeFormatter.ofPattern(pattern + ".yyyy");
+                    pattern += ".yyyy";
                 }
 
                 // add century e.g. 22 -> 2022
-                if (pattern.contains("yy") && !pattern.contains("yyyy")) {
+                if (pattern.equals("d.M.yy") || pattern.equals("d-M-yy") || pattern.equals("d/M/yy")
+                        || pattern.equals("dd.MM.yy") || pattern.equals("dd-MM-yy") || pattern.equals("dd/MM/yy")) {
                     String[] parts = date.split("[.\\-/]");
                     int year = Integer.parseInt(parts[2]);
-                    int currentCentury = (LocalDate.now().getYear() / 100) * 100;
-                    if (year < 100) {
-                        adjustedDate = parts[0] + "-" + parts[1] + "-" + (currentCentury + year);
-                        formatter = DateTimeFormatter.ofPattern("d-M-yyyy");
-                    }
+                    int fullYear = (LocalDate.now().getYear() / 100) * 100 + year;
+                    adjustedDate = parts[0] + "." + parts[1] + "." + fullYear;
+                    pattern = pattern.replace("yy", "yyyy");
                 }
 
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
                 LocalDate parsedDate = LocalDate.parse(adjustedDate, formatter);
 
-                // leap year test
                 if (parsedDate.getDayOfMonth() == 29 && parsedDate.getMonthValue() == 2 && !parsedDate.isLeapYear()) {
                     return null;
                 }
 
-                return parsedDate.format(DateTimeFormatter.ISO_LOCAL_DATE); // yyyy-MM-dd
-            } catch (NumberFormatException e) {
-                throw new RuntimeException(e);
+                return parsedDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+            } catch (Exception ignored) {}
+        }
+
+        return null;
+    }
+    private static String formatTime(String time) {
+        List<String> patterns = Arrays.asList(
+                "H:mm", "HH:mm", "H.mm 'Uhr'", "HH.mm 'Uhr'", "H^mm", "HH^mm"
+        );
+
+        for (String pattern : patterns) {
+            try {
+                DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern(pattern);
+                DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("HH:mm");
+                return outputFormatter.format(inputFormatter.parse(time));
+            } catch (Exception ignored) {
             }
         }
-        return date;
+        return null;
     }
+
 }
