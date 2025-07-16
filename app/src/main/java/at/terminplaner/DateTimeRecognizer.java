@@ -115,8 +115,32 @@ public class DateTimeRecognizer {
         return null;
     }
     private static String formatTime(String time) {
+        // Normalize input: trim and replace multiple spaces
+        time = time.trim().replaceAll("\\s+", " ");
+
+        // "4.30 Uhr" → "4:30"
+        if (time.matches("\\d{1,2}\\.\\d{2}\\s?Uhr")) {
+            time = time.replace(".", ":").replace(" Uhr", "");
+        }
+
+        time = time.replace(" Uhr ", ":").replace(" Uhr", ":00");
+        if (time.matches("\\d{1,2} Uhr \\d{1,2}")) {
+            time = time.replace(" Uhr ", ":");
+        }
+
         List<String> patterns = Arrays.asList(
-                "H:mm", "HH:mm", "H.mm 'Uhr'", "HH.mm 'Uhr'", "H^mm", "HH^mm"
+                "H:mm",        // 9:30, 10:00
+                "HH:mm",       // 09:30, 10:00
+                "H.mm 'Uhr'",  // 4.30 Uhr
+                "HH.mm 'Uhr'", // 04.30 Uhr
+                "H'h'mm",      // 3h00
+                "HH'h'mm",     // 13h05
+                "H^mm",        // 3^00
+                "HH^mm",       // 13^15
+                "H':00'",      // 9 Uhr → 9:00
+                "HH':00'",     // 10 Uhr → 10:00
+                "H:mm:ss",
+                "HH:mm:ss"
         );
 
         for (String pattern : patterns) {
@@ -127,6 +151,7 @@ public class DateTimeRecognizer {
             } catch (Exception ignored) {
             }
         }
+
         return null;
     }
 
