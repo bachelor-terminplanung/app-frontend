@@ -1,6 +1,9 @@
 package at.terminplaner;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,5 +54,50 @@ public class DateTimeRecognizer {
         }
 
         return results;
+    }
+
+    private static String formatDate (String date) {
+        // d, M can either be 1 or 2 numbers
+        List<String> patterns = Arrays.asList(
+                "yyyy-MM-dd", "d.M.yyyy", "d-M-yyyy", "d/M/yyyy",
+                "d.M.yy", "d-M-yy", "d/M/yy",
+                "d.M", "d-M", "d/M"
+        );
+
+        for (String pattern : patterns) {
+            try {
+                String adjustedDate = date;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+
+                // there is no year -> add current year
+                if (pattern.equals("d.M") || pattern.equals("d-M") || pattern.equals("d/M")) {
+                    adjustedDate += "." + LocalDate.now().getYear();
+                    formatter = DateTimeFormatter.ofPattern(pattern + ".yyyy");
+                }
+
+                // add century e.g. 22 -> 2022
+                if (pattern.contains("yy") && !pattern.contains("yyyy")) {
+                    String[] parts = date.split("[.\\-/]");
+                    int year = Integer.parseInt(parts[2]);
+                    int currentCentury = (LocalDate.now().getYear() / 100) * 100;
+                    if (year < 100) {
+                        adjustedDate = parts[0] + "-" + parts[1] + "-" + (currentCentury + year);
+                        formatter = DateTimeFormatter.ofPattern("d-M-yyyy");
+                    }
+                }
+
+                LocalDate parsedDate = LocalDate.parse(adjustedDate, formatter);
+
+                // leap year test
+                if (parsedDate.getDayOfMonth() == 29 && parsedDate.getMonthValue() == 2 && !parsedDate.isLeapYear()) {
+                    return null;
+                }
+
+                return parsedDate.format(DateTimeFormatter.ISO_LOCAL_DATE); // yyyy-MM-dd
+            } catch (NumberFormatException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return date;
     }
 }
