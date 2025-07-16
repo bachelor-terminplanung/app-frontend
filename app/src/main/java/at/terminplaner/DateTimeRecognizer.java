@@ -33,6 +33,8 @@ public class DateTimeRecognizer {
                             "\\d{1,2}" + // month
                             "[.\\-/]" +
                             "\\d{1,2}" + // day
+                            "|" +
+                            "\\d{1,2}[\\.\\s]*" + "(Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)[\\s,]*(\\d{4})?" +
                             ")\\b" + // word limit for end
                             "(?!" + // Negative Lookahead → the expression must not follow
                             "\\s?" + // optional space
