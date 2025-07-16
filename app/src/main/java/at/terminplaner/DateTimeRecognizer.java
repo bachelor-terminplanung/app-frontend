@@ -100,6 +100,10 @@ public class DateTimeRecognizer {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
                 LocalDate parsedDate = LocalDate.parse(adjustedDate, formatter);
 
+                if (parsedDate.getYear() < 1900 || parsedDate.getYear() > 2100) {
+                    return null;
+                }
+
                 if (parsedDate.getDayOfMonth() == 29 && parsedDate.getMonthValue() == 2 && !parsedDate.isLeapYear()) {
                     return null;
                 }
