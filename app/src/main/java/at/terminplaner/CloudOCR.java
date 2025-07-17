@@ -6,8 +6,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -35,6 +40,30 @@ public class CloudOCR extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, SELECT_IMAGE);
         });
+        Button button = findViewById(R.id.insertManually);
+
+        button.setOnClickListener(v -> {
+            LayoutInflater inflater = (LayoutInflater)
+                    getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.manuall_insert_pop_up, null);
+
+            // popup window
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int width = (int) (displayMetrics.widthPixels * 0.9);
+            int height = (int) (displayMetrics.heightPixels * 0.7);
+
+            boolean focusable = true;
+            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+            View rootView = findViewById(android.R.id.content);
+            rootView.setVisibility(View.GONE);
+
+            popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+            popupWindow.setOnDismissListener(() -> {
+                rootView.setVisibility(View.VISIBLE);
+            });
+        });
     }
 
     @Override
@@ -53,4 +82,5 @@ public class CloudOCR extends AppCompatActivity {
             }
         }
     }
+
 }
