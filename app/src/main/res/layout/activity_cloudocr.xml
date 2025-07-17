@@ -5,18 +5,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/selectImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Bild hochladen" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="572dp"
         android:layout_marginTop="16dp"
         android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/selectImage"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="2.5dp"
+            android:text="Bild hochladen" />
+
+        <Button
+            android:id="@+id/takeImage"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="2.5dp"
+            android:text="Bild aufnehmen" />
+
+        <Button
+            android:id="@+id/insertManually"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="2.5dp"
+            android:text="Manuelle Eingabe" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/resultText"
