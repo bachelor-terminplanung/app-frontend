@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -20,7 +21,8 @@
             android:inputType="date"
             android:layout_marginBottom="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="MissingConstraints" />
 
         <EditText
             android:id="@+id/inputStartTime"
@@ -49,7 +51,7 @@
             android:id="@+id/inputDuration"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Duration (minutes)"
+            android:hint="Duration (HH:MM:SS)"
             android:inputType="number"
             android:layout_marginBottom="8dp"
             app:layout_constraintTop_toBottomOf="@id/inputDescription"
