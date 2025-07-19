@@ -122,21 +122,20 @@ public class VisionApiHelper {
         return null;
     }
 
-    public static void sendEvent(String description, String date, String time) {
+    public static void sendEvent(String description, String date, String time, int duration, boolean isRepeating, String repeatType, String repeatUntil, String reminderAt) {
         try {
-            URL url = new URL("http://192.168.10.28:3000/events");
+            URL url = new URL("http://192.168.10.28:3000/event");
 
             JSONObject json = new JSONObject();
             json.put("user_id", 1);
             json.put("event_date", date);
             json.put("start_time", time);
             json.put("description", description);
-            json.put("duration", 60);
-            json.put("is_repeating", false);
-            json.put("repeat_type", JSONObject.NULL);
-            json.put("repeat_until", JSONObject.NULL);
-            json.put("reminder_at", "2025-07-13T09:00:00");
-
+            json.put("duration", duration);
+            json.put("is_repeating", isRepeating);
+            json.put("repeat_type", repeatType.isEmpty() ? JSONObject.NULL : repeatType);
+            json.put("repeat_until", repeatUntil.isEmpty() ? JSONObject.NULL : repeatUntil);
+            json.put("reminder_at", reminderAt.isEmpty() ? JSONObject.NULL : reminderAt);
 
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("POST");
@@ -162,13 +161,12 @@ public class VisionApiHelper {
             }
 
             httpURLConnection.disconnect();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void recognizeHandwriting(Bitmap bitmap, String apiKey, Consumer<String> callback) {
+    public static void recognizeHandwriting(Bitmap bitmap, String apiKey, Consumer<String> callback, CloudOCR cloudOCR) {
         new Thread(() -> {
             try {
                 JSONObject requestObj =  preparePayload(bitmap);
@@ -178,8 +176,10 @@ public class VisionApiHelper {
                 List<String> times = DateTimeRecognizer.getRecognicedDatesOrTimes(detectedText, DateTimeRecognizer.Type.TIME);
                 Log.d("dates", dates.get(0));
                 Log.d("times", times.get(0));
-
-                sendEvent(detectedText, dates.get(0), times.get(0));
+                String date = dates.isEmpty() ? "" : dates.get(0);
+                String time = times.isEmpty() ? "" : times.get(0);
+                cloudOCR.runOnUiThread(() -> cloudOCR.showDetailedPopup(detectedText, date, time));
+                //sendEvent(detectedText, dates.get(0), times.get(0));
 
                 if (detectedText != null) {
                     callback.accept(detectedText);
