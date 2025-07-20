@@ -122,7 +122,7 @@ public class VisionApiHelper {
         return null;
     }
 
-    public static void sendEvent(String description, String date, String time, int duration, boolean isRepeating, String repeatType, String repeatUntil, String reminderAt) {
+    public static void sendEvent(String description, String date, String time, int duration, boolean isRepeating, String repeatType, String repeatUntil) {
         try {
             URL url = new URL("http://192.168.10.28:3000/event");
 
@@ -135,7 +135,6 @@ public class VisionApiHelper {
             json.put("is_repeating", isRepeating);
             json.put("repeat_type", repeatType.isEmpty() ? JSONObject.NULL : repeatType);
             json.put("repeat_until", repeatUntil.isEmpty() ? JSONObject.NULL : repeatUntil);
-            json.put("reminder_at", reminderAt.isEmpty() ? JSONObject.NULL : reminderAt);
 
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("POST");
@@ -174,8 +173,8 @@ public class VisionApiHelper {
 
                 List<String> dates = DateTimeRecognizer.getRecognicedDatesOrTimes(detectedText, DateTimeRecognizer.Type.DATE);
                 List<String> times = DateTimeRecognizer.getRecognicedDatesOrTimes(detectedText, DateTimeRecognizer.Type.TIME);
-                Log.d("dates", dates.get(0));
-                Log.d("times", times.get(0));
+                Log.d("dates",dates.isEmpty() ? "" : dates.get(0));
+                Log.d("times", times.isEmpty() ? "" : times.get(0));
                 String date = dates.isEmpty() ? "" : dates.get(0);
                 String time = times.isEmpty() ? "" : times.get(0);
                 cloudOCR.runOnUiThread(() -> cloudOCR.showDetailedPopup(detectedText, date, time));

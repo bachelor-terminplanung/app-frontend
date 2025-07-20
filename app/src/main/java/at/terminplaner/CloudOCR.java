@@ -89,7 +89,6 @@ public class CloudOCR extends AppCompatActivity {
         Switch switchIsRepeating = popupView.findViewById(R.id.switchIsRepeating);
         EditText inputRepeatType = popupView.findViewById(R.id.inputRepeatType);
         EditText inputRepeatUntil = popupView.findViewById(R.id.inputRepeatUntil);
-        EditText inputReminderAt = popupView.findViewById(R.id.inputReminderAt);
         Button submitButton = popupView.findViewById(R.id.buttonSubmit);
 
         // if OCR called, insert values
@@ -107,9 +106,8 @@ public class CloudOCR extends AppCompatActivity {
             boolean isRepeating = switchIsRepeating.isChecked();
             String repeatType = inputRepeatType.getText().toString();
             String repeatUntil = inputRepeatUntil.getText().toString();
-            String reminderAt = inputReminderAt.getText().toString();
 
-            new Thread(() -> VisionApiHelper.sendEvent(descriptionInput, dateInput, timeInput, duration, isRepeating, repeatType, repeatUntil, reminderAt)).start();
+            new Thread(() -> VisionApiHelper.sendEvent(descriptionInput, dateInput, timeInput, duration, isRepeating, repeatType, repeatUntil)).start();
 
             popupWindow.dismiss();
         });
