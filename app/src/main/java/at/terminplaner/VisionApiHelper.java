@@ -3,6 +3,7 @@ package at.terminplaner;
 import android.graphics.Bitmap;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -122,7 +123,7 @@ public class VisionApiHelper {
         return null;
     }
 
-    public static void sendEvent(String description, String date, String time, int duration, boolean isRepeating, String repeatType, String repeatUntil) {
+    public static void sendEvent(CloudOCR cloudOCR, String description, String date, String time, int duration, boolean isRepeating, String repeatType, String repeatUntil) {
         try {
             URL url = new URL("http://192.168.10.28:3000/event");
 
@@ -154,8 +155,14 @@ public class VisionApiHelper {
             Log.d("responseCode", "responseCode: " + responseCode);
 
             if (responseCode == HttpURLConnection.HTTP_CREATED) {
+                cloudOCR.runOnUiThread(() ->
+                        Toast.makeText(cloudOCR, "Termin erfolgreich gespeichert!", Toast.LENGTH_SHORT).show()
+                );
                 System.out.println("Event erfolgreich gesendet.");
             } else {
+                cloudOCR.runOnUiThread(() ->
+                        Toast.makeText(cloudOCR, "Termin konnte nicht erfolgreich gespeichert werden!", Toast.LENGTH_SHORT).show()
+                );
                 System.out.println("Fehler beim Senden des Events. HTTP-Code: " + responseCode);
             }
 

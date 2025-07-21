@@ -136,7 +136,7 @@ public class CloudOCR extends AppCompatActivity {
             String repeatType = spinnerRepeatType.getSelectedItem().toString();
             String repeatUntil = inputRepeatUntil.getText().toString();
 
-            new Thread(() -> VisionApiHelper.sendEvent(descriptionInput, dateInput, timeInput, duration, isRepeating, repeatType, repeatUntil)).start();
+            new Thread(() -> VisionApiHelper.sendEvent(this, descriptionInput, dateInput, timeInput, duration, isRepeating, repeatType, repeatUntil)).start();
 
             popupWindow.dismiss();
         });
