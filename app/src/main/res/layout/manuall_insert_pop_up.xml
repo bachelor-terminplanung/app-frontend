@@ -8,82 +8,81 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="#BBCAEF"
         android:padding="16dp">
 
         <EditText
             android:id="@+id/inputEventDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:hint="Event Date (YYYY-MM-DD)"
             android:inputType="date"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/inputStartTime"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:hint="Start Time (HH:MM)"
             android:inputType="time"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@id/inputEventDate"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/inputEventDate" />
 
         <EditText
             android:id="@+id/inputDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:hint="Description"
             android:inputType="textMultiLine"
             android:minLines="1"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@id/inputStartTime"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/inputStartTime" />
 
         <EditText
             android:id="@+id/inputDuration"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:hint="Duration (HH:MM:SS)"
             android:inputType="number"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@id/inputDescription"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/inputDescription" />
 
         <Switch
             android:id="@+id/switchIsRepeating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Is Repeating?"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@id/inputDuration"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:text="  Is Repeating?"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/inputDuration" />
 
         <Spinner
             android:id="@+id/spinnerRepeatType"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@id/switchIsRepeating"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/switchIsRepeating" />
 
         <EditText
             android:id="@+id/inputRepeatUntil"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:hint="Repeat Until (YYYY-MM-DD, optional)"
             android:inputType="date"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@id/spinnerRepeatType"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/spinnerRepeatType" />
 
 
         <Button
@@ -91,8 +90,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Speichern"
-            app:layout_constraintTop_toBottomOf="@id/inputRepeatUntil"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/inputRepeatUntil" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
