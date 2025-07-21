@@ -3,7 +3,10 @@ package at.terminplaner;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.RenderEffect;
+import android.graphics.Shader;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
@@ -112,7 +115,17 @@ public class CloudOCR extends AppCompatActivity {
         inputStartTime.setText(time);
         inputDescription.setText(description);
 
-        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+        View rootView = findViewById(android.R.id.content);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            RenderEffect blur = RenderEffect.createBlurEffect(10f, 10f, Shader.TileMode.CLAMP);
+            rootView.setRenderEffect(blur);
+        }
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+        popupWindow.setOnDismissListener(() -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                rootView.setRenderEffect(null);
+            }
+        });
 
         submitButton.setOnClickListener(v -> {
             String descriptionInput = inputDescription.getText().toString();
