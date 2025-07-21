@@ -10,10 +10,12 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -87,7 +89,21 @@ public class CloudOCR extends AppCompatActivity {
         EditText inputDescription = popupView.findViewById(R.id.inputDescription);
         EditText inputDuration = popupView.findViewById(R.id.inputDuration);
         Switch switchIsRepeating = popupView.findViewById(R.id.switchIsRepeating);
-        EditText inputRepeatType = popupView.findViewById(R.id.inputRepeatType);
+
+        Spinner spinnerRepeatType = popupView.findViewById(R.id.spinnerRepeatType);
+        spinnerRepeatType.setVisibility(View.GONE);
+        switchIsRepeating.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            spinnerRepeatType.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        });
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.repeat_type_options,
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRepeatType.setAdapter(adapter);
+
         EditText inputRepeatUntil = popupView.findViewById(R.id.inputRepeatUntil);
         Button submitButton = popupView.findViewById(R.id.buttonSubmit);
 
@@ -104,7 +120,7 @@ public class CloudOCR extends AppCompatActivity {
             String timeInput = inputStartTime.getText().toString();
             int duration = Integer.parseInt(inputDuration.getText().toString());
             boolean isRepeating = switchIsRepeating.isChecked();
-            String repeatType = inputRepeatType.getText().toString();
+            String repeatType = spinnerRepeatType.getSelectedItem().toString();
             String repeatUntil = inputRepeatUntil.getText().toString();
 
             new Thread(() -> VisionApiHelper.sendEvent(descriptionInput, dateInput, timeInput, duration, isRepeating, repeatType, repeatUntil)).start();
