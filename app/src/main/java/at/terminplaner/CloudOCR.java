@@ -30,6 +30,7 @@ import java.io.IOException;
 public class CloudOCR extends AppCompatActivity {
 
     private static final int SELECT_IMAGE = 1;
+    private static final int CAMERA_PIC_REQUEST = 2500;
     private ImageView imageView;
     private TextView resultText;
     private String apiKey = "";
@@ -50,6 +51,12 @@ public class CloudOCR extends AppCompatActivity {
 
         Button insertManuallyButton = findViewById(R.id.insertManually);
         insertManuallyButton.setOnClickListener(v -> showDetailedPopup("", "", ""));
+
+        Button camera = findViewById(R.id.takeImage);
+        camera.setOnClickListener(v -> {
+            Intent intent = new Intent(CloudOCR.this, Camera.class);
+            startActivityForResult(intent, CAMERA_PIC_REQUEST);
+        });
     }
 
     @Override
@@ -59,17 +66,25 @@ public class CloudOCR extends AppCompatActivity {
         if (requestCode == SELECT_IMAGE && resultCode == RESULT_OK && image != null) {
             Uri imageUri = image.getData();
             imageView.setImageURI(imageUri);
-
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                VisionApiHelper.recognizeHandwriting(bitmap, apiKey, result -> runOnUiThread(() -> {
-                    resultText.setText(result);
-                }), CloudOCR.this);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            processImage(imageUri);
+        }
+        if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK && image != null) {
+            Uri imageUri = image.getData();  // vom Camera-Intent
+            imageView.setImageURI(imageUri);
+            processImage(imageUri);
         }
     }
+    private void processImage(Uri imageUri) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            VisionApiHelper.recognizeHandwriting(bitmap, apiKey, result -> runOnUiThread(() -> {
+                resultText.setText(result);
+            }), CloudOCR.this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void showDetailedPopup(String description, String date, String time) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
