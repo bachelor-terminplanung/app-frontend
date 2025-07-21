@@ -32,7 +32,6 @@ public class Camera extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera);
 
         // permission request
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -44,18 +43,6 @@ public class Camera extends AppCompatActivity {
             // open camera
             dispatchTakePictureIntent();
         }
-
-        Button button = findViewById(R.id.camera_button);
-        button.setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_GRANTED) {
-                dispatchTakePictureIntent();
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA},
-                        REQUEST_CAMERA_PERMISSION);
-            }
-        });
     }
 
     @Override
