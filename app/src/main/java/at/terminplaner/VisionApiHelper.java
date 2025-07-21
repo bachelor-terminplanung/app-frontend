@@ -107,9 +107,6 @@ public class VisionApiHelper {
                 // get recognized text
                 String text = response.getJSONObject("fullTextAnnotation").getString("text");
                 return text;
-                //callback.accept(text);
-            } else {
-                //callback.accept("Kein Text erkannt.");
             }
         } catch (ProtocolException e) {
             throw new RuntimeException(e);
