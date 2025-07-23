@@ -10,6 +10,19 @@
         android:layout_height="wrap_content"
         android:background="#DCE4F8"
         android:padding="16dp">
+        <TextView
+            android:id="@+id/textViewOcrStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bitte geben Sie Ihren Termin ein:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="8dp"/>
+
 
         <EditText
             android:id="@+id/inputEventDate"
@@ -18,7 +31,9 @@
             android:layout_marginBottom="8dp"
             android:hint="Event Date (YYYY-MM-DD)"
             android:inputType="date"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewOcrStatus"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
