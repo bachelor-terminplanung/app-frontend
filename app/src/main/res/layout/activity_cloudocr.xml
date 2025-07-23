@@ -23,6 +23,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_margin="2.5dp"
+            android:theme="@style/BlueButton"
             android:text="Bild hochladen" />
 
         <Button
@@ -31,6 +32,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_margin="2.5dp"
+            android:theme="@style/BlueButton"
             android:text="Bild aufnehmen" />
 
         <Button
@@ -39,6 +41,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_margin="2.5dp"
+            android:theme="@style/BlueButton"
             android:text="Manuelle Eingabe" />
     </LinearLayout>
 
