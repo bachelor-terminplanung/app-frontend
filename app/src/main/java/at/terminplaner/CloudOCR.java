@@ -50,7 +50,7 @@ public class CloudOCR extends AppCompatActivity {
         });
 
         Button insertManuallyButton = findViewById(R.id.insertManually);
-        insertManuallyButton.setOnClickListener(v -> showDetailedPopup("", "", ""));
+        insertManuallyButton.setOnClickListener(v -> showDetailedPopup("", "", "", false));
 
         Button camera = findViewById(R.id.takeImage);
         camera.setOnClickListener(v -> {
@@ -86,10 +86,14 @@ public class CloudOCR extends AppCompatActivity {
     }
 
 
-    public void showDetailedPopup(String description, String date, String time) {
+    public void showDetailedPopup(String description, String date, String time, boolean fromOCR) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.manuall_insert_pop_up, null);
+        Button submitButton = popupView.findViewById(R.id.buttonSubmit);
 
+        if (fromOCR == true) {
+            submitButton.setText("Daten in Ordnung");
+        }
         // popup window
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -123,7 +127,6 @@ public class CloudOCR extends AppCompatActivity {
         spinnerRepeatType.setAdapter(adapter);
 
         EditText inputRepeatUntil = popupView.findViewById(R.id.inputRepeatUntil);
-        Button submitButton = popupView.findViewById(R.id.buttonSubmit);
 
         // if OCR called, insert values
         inputEventDate.setText(date);
@@ -156,6 +159,4 @@ public class CloudOCR extends AppCompatActivity {
             popupWindow.dismiss();
         });
     }
-
-
 }
