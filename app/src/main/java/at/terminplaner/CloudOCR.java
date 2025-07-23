@@ -90,8 +90,10 @@ public class CloudOCR extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.manuall_insert_pop_up, null);
         Button submitButton = popupView.findViewById(R.id.buttonSubmit);
+        TextView inputTextOK = popupView.findViewById(R.id.textViewOcrStatus);
 
         if (fromOCR == true) {
+            inputTextOK.setText("Erkannte Daten in Ordnung?");
             submitButton.setText("Daten in Ordnung");
         }
         // popup window
