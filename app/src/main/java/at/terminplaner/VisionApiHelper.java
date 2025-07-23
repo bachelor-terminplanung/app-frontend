@@ -181,8 +181,7 @@ public class VisionApiHelper {
                 Log.d("times", times.isEmpty() ? "" : times.get(0));
                 String date = dates.isEmpty() ? "" : dates.get(0);
                 String time = times.isEmpty() ? "" : times.get(0);
-                cloudOCR.runOnUiThread(() -> cloudOCR.showDetailedPopup(detectedText, date, time));
-                //sendEvent(detectedText, dates.get(0), times.get(0));
+                cloudOCR.runOnUiThread(() -> cloudOCR.showDetailedPopup(detectedText, date, time, true));
 
                 if (detectedText != null) {
                     callback.accept(detectedText);

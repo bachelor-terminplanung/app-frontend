@@ -2,6 +2,7 @@ package at.terminplaner;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.RenderEffect;
 import android.graphics.Shader;
@@ -24,12 +25,15 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
 
 public class CloudOCR extends AppCompatActivity {
 
     private static final int SELECT_IMAGE = 1;
+    private static final int CAMERA_PIC_REQUEST = 2500;
     private ImageView imageView;
     private TextView resultText;
     private String apiKey = "";
@@ -49,7 +53,13 @@ public class CloudOCR extends AppCompatActivity {
         });
 
         Button insertManuallyButton = findViewById(R.id.insertManually);
-        insertManuallyButton.setOnClickListener(v -> showDetailedPopup("", "", ""));
+        insertManuallyButton.setOnClickListener(v -> showDetailedPopup("", "", "", false));
+
+        Button camera = findViewById(R.id.takeImage);
+        camera.setOnClickListener(v -> {
+            Intent intent = new Intent(CloudOCR.this, Camera.class);
+            startActivityForResult(intent, CAMERA_PIC_REQUEST);
+        });
     }
 
     @Override
@@ -59,21 +69,39 @@ public class CloudOCR extends AppCompatActivity {
         if (requestCode == SELECT_IMAGE && resultCode == RESULT_OK && image != null) {
             Uri imageUri = image.getData();
             imageView.setImageURI(imageUri);
-
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                VisionApiHelper.recognizeHandwriting(bitmap, apiKey, result -> runOnUiThread(() -> {
-                    resultText.setText(result);
-                }), CloudOCR.this);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            processImage(imageUri);
+        }
+        if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK && image != null) {
+            Uri imageUri = image.getData();  // vom Camera-Intent
+            imageView.setImageURI(imageUri);
+            processImage(imageUri);
+        }
+    }
+    private void processImage(Uri imageUri) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            VisionApiHelper.recognizeHandwriting(bitmap, apiKey, result -> runOnUiThread(() -> {
+                resultText.setText(result);
+            }), CloudOCR.this);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void showDetailedPopup(String description, String date, String time) {
+
+    public void showDetailedPopup(String description, String date, String time, boolean fromOCR) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.manuall_insert_pop_up, null);
+        Button submitButton = popupView.findViewById(R.id.buttonSubmit);
+        TextView inputTextOK = popupView.findViewById(R.id.textViewOcrStatus);
+
+        if (fromOCR == true) {
+            inputTextOK.setText("Erkannte Daten in Ordnung?");
+            submitButton.setText("Daten in Ordnung");
+        }
+        ConstraintLayout popupRoot = popupView.findViewById(R.id.popup);
+        int backgroundColor = isDarkMode() ? R.color.popupBackgroundDark : R.color.popupBackgroundLight;
+        popupRoot.setBackgroundColor(ContextCompat.getColor(this, backgroundColor));
 
         // popup window
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -108,7 +136,6 @@ public class CloudOCR extends AppCompatActivity {
         spinnerRepeatType.setAdapter(adapter);
 
         EditText inputRepeatUntil = popupView.findViewById(R.id.inputRepeatUntil);
-        Button submitButton = popupView.findViewById(R.id.buttonSubmit);
 
         // if OCR called, insert values
         inputEventDate.setText(date);
@@ -141,6 +168,9 @@ public class CloudOCR extends AppCompatActivity {
             popupWindow.dismiss();
         });
     }
-
+    private boolean isDarkMode() {
+        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+    }
 
 }
