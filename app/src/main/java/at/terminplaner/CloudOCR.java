@@ -2,6 +2,7 @@ package at.terminplaner;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.RenderEffect;
 import android.graphics.Shader;
@@ -161,4 +162,9 @@ public class CloudOCR extends AppCompatActivity {
             popupWindow.dismiss();
         });
     }
+    private boolean isDarkMode() {
+        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+    }
+
 }
