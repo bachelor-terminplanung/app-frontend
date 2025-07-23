@@ -25,6 +25,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
 
@@ -97,6 +99,10 @@ public class CloudOCR extends AppCompatActivity {
             inputTextOK.setText("Erkannte Daten in Ordnung?");
             submitButton.setText("Daten in Ordnung");
         }
+        ConstraintLayout popupRoot = popupView.findViewById(R.id.popup);
+        int backgroundColor = isDarkMode() ? R.color.popupBackgroundDark : R.color.popupBackgroundLight;
+        popupRoot.setBackgroundColor(ContextCompat.getColor(this, backgroundColor));
+
         // popup window
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
