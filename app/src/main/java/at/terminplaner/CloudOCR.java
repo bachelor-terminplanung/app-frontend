@@ -184,21 +184,7 @@ public class CloudOCR extends AppCompatActivity {
                                 .setTitle("Wiederholter Termin erkannt")
                                 .setMessage("Dieses Event existiert bereits (" + count + " mal). Als Wiederholung speichern?")
                                 .setPositiveButton("Ja", (dialog, which) -> {
-                                    String[] repeatOptions = {"Täglich", "Wöchentlich", "Monatlich"};
-                                    new androidx.appcompat.app.AlertDialog.Builder(CloudOCR.this)
-                                            .setTitle("Wiederholungstyp auswählen")
-                                            .setItems(repeatOptions, (dialogInterface, selectedIndex) -> {
-                                                String selectedRepeatType = repeatOptions[selectedIndex];
-
-                                                new Thread(() -> VisionApiHelper.sendEvent(
-                                                        CloudOCR.this, description, date, time,
-                                                        duration, true, selectedRepeatType, repeatUntil
-                                                )).start();
-
-                                                popupWindow.dismiss();
-                                            })
-                                            .setNegativeButton("Abbrechen", null)
-                                            .show();
+                                    showRepeatingOptions();
                                 })
                                 .setNegativeButton("Nein", null)
                                 .show();
@@ -210,6 +196,24 @@ public class CloudOCR extends AppCompatActivity {
                         popupWindow.dismiss();
                     }
                 });
+            }
+
+            private void showRepeatingOptions() {
+                String[] repeatOptions = {"Täglich", "Wöchentlich", "Monatlich", "Jährlich"};
+                new androidx.appcompat.app.AlertDialog.Builder(CloudOCR.this)
+                        .setTitle("Wiederholungstyp auswählen")
+                        .setItems(repeatOptions, (dialogInterface, selectedIndex) -> {
+                            String selectedRepeatType = repeatOptions[selectedIndex];
+
+                            new Thread(() -> VisionApiHelper.sendEvent(
+                                    CloudOCR.this, description, date, time,
+                                    duration, true, selectedRepeatType, repeatUntil
+                            )).start();
+
+                            popupWindow.dismiss();
+                        })
+                        .setNegativeButton("Abbrechen", null)
+                        .show();
             }
 
             @Override
