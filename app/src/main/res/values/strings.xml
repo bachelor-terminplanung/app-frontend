@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">terminplaner</string>
+
+    <string-array name="repeat_type_options">
+        <item>Täglich</item>
+        <item>Wöchentlich</item>
+        <item>Monatlich</item>
+        <item>Jährlich</item>
+    </string-array>
 </resources>
