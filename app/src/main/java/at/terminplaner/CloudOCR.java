@@ -164,18 +164,15 @@ public class CloudOCR extends AppCompatActivity {
             String repeatType = spinnerRepeatType.getSelectedItem().toString();
             String repeatUntil = inputRepeatUntil.getText().toString();
 
-            checkAndHandleDuplicate(descriptionInput, dateInput, timeInput, duration, isRepeating, repeatType, repeatUntil, popupWindow);
-
+            Event inputEvent = new Event(descriptionInput, dateInput, timeInput, duration, isRepeating, repeatType, repeatUntil);
+            checkAndHandleDuplicate(inputEvent, popupWindow);
             popupWindow.dismiss();
         });
     }
 
-    private void checkAndHandleDuplicate(String description, String date, String time,
-                                         int duration, boolean isRepeating,
-                                         String repeatType, String repeatUntil,
-                                         PopupWindow popupWindow) {
+    private void checkAndHandleDuplicate(Event inputEvent, PopupWindow popupWindow) {
 
-        DuplicateEventChecker.checkDuplicateEvent(this, date, time, description, new DuplicateEventChecker.DuplicateCallback() {
+        DuplicateEventChecker.checkDuplicateEvent(this, inputEvent.date, inputEvent.time, inputEvent.description, new DuplicateEventChecker.DuplicateCallback() {
             @Override
             public void onResult(boolean isDuplicate, int count) {
                 runOnUiThread(() -> {
@@ -184,21 +181,21 @@ public class CloudOCR extends AppCompatActivity {
                                 .setTitle("Wiederholter Termin erkannt")
                                 .setMessage("Dieses Event existiert bereits (" + count + " mal). Als Wiederholung speichern?")
                                 .setPositiveButton("Ja", (dialog, which) -> {
-                                    showRepeatingOptions();
+                                    showRepeatingOptions(inputEvent);
                                 })
                                 .setNegativeButton("Nein", null)
                                 .show();
                     } else {
                         new Thread(() -> VisionApiHelper.sendEvent(
-                                CloudOCR.this, description, date, time,
-                                duration, isRepeating, repeatType, repeatUntil
+                                CloudOCR.this, inputEvent.description, inputEvent.date, inputEvent.time,
+                                inputEvent.duration, inputEvent.isRepeating, inputEvent.repeatType, inputEvent.repeatUntil
                         )).start();
                         popupWindow.dismiss();
                     }
                 });
             }
 
-            private void showRepeatingOptions() {
+            private void showRepeatingOptions(Event inputEvent) {
                 String[] repeatOptions = {"Täglich", "Wöchentlich", "Monatlich", "Jährlich"};
                 new androidx.appcompat.app.AlertDialog.Builder(CloudOCR.this)
                         .setTitle("Wiederholungstyp auswählen")
@@ -206,8 +203,8 @@ public class CloudOCR extends AppCompatActivity {
                             String selectedRepeatType = repeatOptions[selectedIndex];
 
                             new Thread(() -> VisionApiHelper.sendEvent(
-                                    CloudOCR.this, description, date, time,
-                                    duration, true, selectedRepeatType, repeatUntil
+                                    CloudOCR.this, inputEvent.description, inputEvent.date, inputEvent.time,
+                                    inputEvent.duration, true, selectedRepeatType, inputEvent.repeatUntil
                             )).start();
 
                             popupWindow.dismiss();
