@@ -58,7 +58,7 @@ public class DuplicateEventChecker {
                         callback.onResult(isDuplicate, count);
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        callback.onError("Antwort konnte nicht gelesen werden.");
+                        callback.onError("Fehler beim Lesen der Daten.");
                     }
                 } else {
                     callback.onError("Serverfehler: " + response.code());
