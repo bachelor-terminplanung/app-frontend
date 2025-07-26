@@ -18,4 +18,32 @@ public class Event {
         this.repeatType = repeatType;
         this.repeatUntil = repeatUntil;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public String getRepeatUntil() {
+        return repeatUntil;
+    }
+
+    public boolean isRepeating() {
+        return isRepeating;
+    }
+
+    public String getRepeatType() {
+        return repeatType;
+    }
 }
