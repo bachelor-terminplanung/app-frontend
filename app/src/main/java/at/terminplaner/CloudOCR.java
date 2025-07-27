@@ -54,7 +54,12 @@ public class CloudOCR extends AppCompatActivity {
         });
 
         Button insertManuallyButton = findViewById(R.id.insertManually);
-        insertManuallyButton.setOnClickListener(v -> showDetailedPopup("", "", "", false));
+        insertManuallyButton.setOnClickListener(v -> {
+            Event event = new Event("", "","", 0, false, "", "");
+            EventPopUp.showDetailedPopup(CloudOCR.this, event, false, inputEvent -> {
+                checkAndHandleDuplicate(inputEvent); // Automatischer Upload / Duplikatsprüfung
+            });
+        });
 
         Button camera = findViewById(R.id.takeImage);
         camera.setOnClickListener(v -> {
@@ -89,88 +94,7 @@ public class CloudOCR extends AppCompatActivity {
         }
     }
 
-
-    public void showDetailedPopup(String description, String date, String time, boolean fromOCR) {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.manuall_insert_pop_up, null);
-        Button submitButton = popupView.findViewById(R.id.buttonSubmit);
-        TextView inputTextOK = popupView.findViewById(R.id.textViewOcrStatus);
-
-        if (fromOCR == true) {
-            inputTextOK.setText("Erkannte Daten in Ordnung?");
-            submitButton.setText("Daten in Ordnung");
-        }
-        ConstraintLayout popupRoot = popupView.findViewById(R.id.popup);
-        int backgroundColor = isDarkMode() ? R.color.popupBackgroundDark : R.color.popupBackgroundLight;
-        popupRoot.setBackgroundColor(ContextCompat.getColor(this, backgroundColor));
-
-        // popup window
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = (int) (displayMetrics.widthPixels * 0.9);
-        int height = (int) (displayMetrics.heightPixels * 0.7);
-
-        boolean focusable = true;
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
-        popupWindow.setElevation(10);
-        popupWindow.setOutsideTouchable(false);
-
-        EditText inputEventDate = popupView.findViewById(R.id.inputEventDate);
-        EditText inputStartTime = popupView.findViewById(R.id.inputStartTime);
-        EditText inputDescription = popupView.findViewById(R.id.inputDescription);
-        EditText inputDuration = popupView.findViewById(R.id.inputDuration);
-        Switch switchIsRepeating = popupView.findViewById(R.id.switchIsRepeating);
-
-        Spinner spinnerRepeatType = popupView.findViewById(R.id.spinnerRepeatType);
-        spinnerRepeatType.setVisibility(View.GONE);
-        switchIsRepeating.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            spinnerRepeatType.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-        });
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.repeat_type_options,
-                android.R.layout.simple_spinner_item
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerRepeatType.setAdapter(adapter);
-
-        EditText inputRepeatUntil = popupView.findViewById(R.id.inputRepeatUntil);
-
-        // if OCR called, insert values
-        inputEventDate.setText(date);
-        inputStartTime.setText(time);
-        inputDescription.setText(description);
-
-        View rootView = findViewById(android.R.id.content);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-            RenderEffect blur = RenderEffect.createBlurEffect(10f, 10f, Shader.TileMode.CLAMP);
-            rootView.setRenderEffect(blur);
-        }
-        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
-        popupWindow.setOnDismissListener(() -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                rootView.setRenderEffect(null);
-            }
-        });
-
-        submitButton.setOnClickListener(v -> {
-            String descriptionInput = inputDescription.getText().toString();
-            String dateInput = inputEventDate.getText().toString();
-            String timeInput = inputStartTime.getText().toString();
-            int duration = Integer.parseInt(inputDuration.getText().toString());
-            boolean isRepeating = switchIsRepeating.isChecked();
-            String repeatType = spinnerRepeatType.getSelectedItem().toString();
-            String repeatUntil = inputRepeatUntil.getText().toString();
-
-            Event inputEvent = new Event(descriptionInput, dateInput, timeInput, duration, isRepeating, repeatType, repeatUntil);
-            checkAndHandleDuplicate(inputEvent, popupWindow);
-            popupWindow.dismiss();
-        });
-    }
-
-    private void checkAndHandleDuplicate(Event inputEvent, PopupWindow popupWindow) {
+    private void checkAndHandleDuplicate(Event inputEvent) {
 
         DuplicateEventChecker.checkDuplicateEvent(this, inputEvent.date, inputEvent.time, inputEvent.description, new DuplicateEventChecker.DuplicateCallback() {
             @Override
@@ -190,7 +114,6 @@ public class CloudOCR extends AppCompatActivity {
                                 CloudOCR.this, inputEvent.description, inputEvent.date, inputEvent.time,
                                 inputEvent.duration, inputEvent.isRepeating, inputEvent.repeatType, inputEvent.repeatUntil
                         )).start();
-                        popupWindow.dismiss();
                     }
                 });
             }
@@ -206,8 +129,6 @@ public class CloudOCR extends AppCompatActivity {
                                     CloudOCR.this, inputEvent.description, inputEvent.date, inputEvent.time,
                                     inputEvent.duration, true, selectedRepeatType, inputEvent.repeatUntil
                             )).start();
-
-                            popupWindow.dismiss();
                         })
                         .setNegativeButton("Abbrechen", null)
                         .show();
@@ -221,9 +142,4 @@ public class CloudOCR extends AppCompatActivity {
             }
         });
     }
-    private boolean isDarkMode() {
-        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
-    }
-
 }
