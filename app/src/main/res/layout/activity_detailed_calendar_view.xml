@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -13,5 +14,69 @@
         tools:layout_editor_absoluteX="137dp"
         tools:layout_editor_absoluteY="11dp"
         tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/detailedViewDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Datum"
+        app:layout_constraintTop_toBottomOf="@+id/updateButton"
+        tools:layout_editor_absoluteX="101dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/detailedViewTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Uhrzeit"
+        app:layout_constraintTop_toBottomOf="@+id/detailedViewDate"
+        tools:layout_editor_absoluteX="101dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/detailedViewDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Beschreibung"
+        app:layout_constraintTop_toBottomOf="@+id/detailedViewTime"
+        tools:layout_editor_absoluteX="101dp" />
+
+    <TextView
+        android:id="@+id/detailedViewDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Dauer"
+        app:layout_constraintTop_toBottomOf="@+id/detailedViewDescription"
+        tools:layout_editor_absoluteX="101dp" />
+
+    <TextView
+        android:id="@+id/detailedViewIsRepeating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Wiederholend?"
+        app:layout_constraintTop_toBottomOf="@+id/detailedViewDuration"
+        tools:layout_editor_absoluteX="101dp" />
+
+    <TextView
+        android:id="@+id/detailedViewRepeatType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Wiederholungstyp"
+        app:layout_constraintTop_toBottomOf="@+id/detailedViewIsRepeating"
+        tools:layout_editor_absoluteX="101dp" />
+
+    <TextView
+        android:id="@+id/detailedViewRepeatUntil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Wiederholen bis"
+        app:layout_constraintTop_toBottomOf="@+id/detailedViewRepeatType"
+        tools:layout_editor_absoluteX="101dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
