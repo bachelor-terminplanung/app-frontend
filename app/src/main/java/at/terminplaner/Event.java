@@ -46,4 +46,17 @@ public class Event {
     public String getRepeatType() {
         return repeatType;
     }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "description='" + description + '\'' +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                ", duration=" + duration +
+                ", isRepeating=" + isRepeating +
+                ", repeatType='" + repeatType + '\'' +
+                ", repeatUntil='" + repeatUntil + '\'' +
+                '}';
+    }
 }
