@@ -1,8 +1,8 @@
 package at.terminplaner;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,10 +28,25 @@ public class UpdateEvent extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_calendar_view);
 
         Button updateButton = findViewById(R.id.updateButton);
+        TextView date = findViewById(R.id.detailedViewDate);
+        TextView time = findViewById(R.id.detailedViewTime);
+        TextView description = findViewById(R.id.detailedViewDescription);
+        TextView duration = findViewById(R.id.detailedViewDuration);
+        TextView isRepeating = findViewById(R.id.detailedViewIsRepeating);
+        TextView repeatType = findViewById(R.id.detailedViewRepeatType);
+        TextView repeatUntil = findViewById(R.id.detailedViewRepeatUntil);
+
+        String dateS = String.valueOf(date.getText());
+        String timeS = (String) time.getText();
+        String descriptionS = (String) description.getText();
+        int durationS = Integer.parseInt(duration.getText().toString().trim());
+        boolean isRepeatingS = Boolean.parseBoolean(isRepeating.getText().toString().trim());
+        String repeatTypeS = (String) repeatType.getText();
+        String repeatUntilS = (String) repeatUntil.getText();
 
         updateButton.setOnClickListener(v -> {
-            Event event = new Event("", "","", 0, false, "", "");
-            EventPopUp.showDetailedPopup(this, event, false, inputEvent -> {
+            Event event = new Event(descriptionS, dateS ,timeS, durationS, isRepeatingS, repeatTypeS, repeatUntilS);
+            EventPopUp.showDetailedPopup(this, event, false, true, inputEvent -> {
                 updateEvent(inputEvent, new okhttp3.Callback() {
                     @Override
                     public void onFailure(okhttp3.Call call, IOException e) {
