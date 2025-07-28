@@ -2,32 +2,17 @@ package at.terminplaner;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.RenderEffect;
-import android.graphics.Shader;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
 
@@ -57,7 +42,7 @@ public class CloudOCR extends AppCompatActivity {
         insertManuallyButton.setOnClickListener(v -> {
             Event event = new Event("", "","", 0, false, "", "");
             EventPopUp.showDetailedPopup(CloudOCR.this, event, false, inputEvent -> {
-                checkAndHandleDuplicate(inputEvent); // Automatischer Upload / Duplikatsprüfung
+                checkAndHandleDuplicate(inputEvent);
             });
         });
 
