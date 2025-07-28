@@ -182,7 +182,7 @@ public class VisionApiHelper {
                 String date = dates.isEmpty() ? "" : dates.get(0);
                 String time = times.isEmpty() ? "" : times.get(0);
                 Event event = new Event(detectedText,date, time, 0,false, "","");
-                cloudOCR.runOnUiThread(() -> EventPopUp.showDetailedPopup(cloudOCR, event, true, inputEvent -> {
+                cloudOCR.runOnUiThread(() -> EventPopUp.showDetailedPopup(cloudOCR, event, true, false, inputEvent -> {
                     // callback ?
                 }));
                 if (detectedText != null) {
