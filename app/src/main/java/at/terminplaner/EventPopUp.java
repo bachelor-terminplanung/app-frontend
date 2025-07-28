@@ -24,7 +24,7 @@ import androidx.core.content.ContextCompat;
 import java.util.function.Consumer;
 
 public class EventPopUp {
-    public static void showDetailedPopup(Activity activity, Event prefillEvent, boolean fromOCR, Consumer<Event> onSubmit) {
+    public static void showDetailedPopup(Activity activity, Event prefillEvent, boolean fromOCR, boolean forUpdate, Consumer<Event> onSubmit) {
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.manuall_insert_pop_up, null);
         Button submitButton = popupView.findViewById(R.id.buttonSubmit);
@@ -33,6 +33,10 @@ public class EventPopUp {
         if (fromOCR == true) {
             inputTextOK.setText("Erkannte Daten in Ordnung?");
             submitButton.setText("Daten in Ordnung");
+        }
+        if (forUpdate == true) {
+            inputTextOK.setText("Bitte bearbeiten Sie nun Ihren Termin:");
+            submitButton.setText("Daten aktualisieren");
         }
         ConstraintLayout popupRoot = popupView.findViewById(R.id.popup);
         int backgroundColor = isDarkMode(activity) ? R.color.popupBackgroundDark : R.color.popupBackgroundLight;
