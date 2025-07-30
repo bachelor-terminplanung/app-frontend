@@ -48,7 +48,7 @@ public class UpdateEvent extends AppCompatActivity {
         updateButton.setOnClickListener(v -> {
             Event event = new Event(descriptionS, dateS ,timeS, durationS, isRepeatingS, repeatTypeS, repeatUntilS);
             Log.d("EVENT", "event: " + event.toString());
-            getEventID(event, new EventIdCallback() {
+            event.getEventID(new EventIdCallback() {
                 @Override
                 public void onEventIdReceived(int eventId) {
                     runOnUiThread(() -> {
@@ -122,59 +122,4 @@ public class UpdateEvent extends AppCompatActivity {
 
         client.newCall(request).enqueue(callback);
     }
-    public static void getEventID(Event event, EventIdCallback callback) {
-        JSONObject jsonBody = new JSONObject();
-        try {
-            jsonBody.put("user_id", 1); //
-            jsonBody.put("event_date", event.getDate());
-            jsonBody.put("start_time", event.getTime());
-            jsonBody.put("description", event.getDescription());
-            jsonBody.put("duration", event.getDuration());
-            jsonBody.put("is_repeating", event.isRepeating());
-            jsonBody.put("repeat_type", event.getRepeatType());
-            if (event.getRepeatUntil() == null || event.getRepeatUntil().isEmpty()) {
-                jsonBody.put("repeat_until", "");
-            } else {
-                jsonBody.put("repeat_until", event.getRepeatUntil());
-            }
-        } catch (JSONException e) {
-            callback.onError("Fehler beim Erstellen des JSON-Objekts");
-            return;
-        }
-
-        RequestBody body = RequestBody.create(jsonBody.toString(), JSON);
-        Log.d("EVENT-BODY", "request body: " + jsonBody.toString());
-        Request request = new Request.Builder()
-                .url(BASE_URL + "/match")
-                .post(body)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                Log.d("EVENT-ID", "error: " );
-                callback.onError("Verbindungsfehler: " + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                String responseBody = response.body().string();
-                Log.d("EVENT-ID", "ResponseBody: " + responseBody);
-                if (!response.isSuccessful()) {
-                    callback.onError("Fehler: " + response.code());
-                    return;
-                }
-
-                try {
-                    JSONObject json = new JSONObject(responseBody);
-                    int id = json.getInt("eventId");
-                    Log.d("EVENT-ID", "id: " + id);
-                    callback.onEventIdReceived(id);
-                } catch (JSONException e) {
-                    callback.onError("Ungültige Serverantwort");
-                }
-            }
-        });
-    }
-
 }
