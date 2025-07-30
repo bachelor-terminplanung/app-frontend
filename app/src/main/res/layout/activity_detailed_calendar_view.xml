@@ -15,6 +15,17 @@
         tools:layout_editor_absoluteY="11dp"
         tools:ignore="MissingConstraints" />
 
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:text="Löschen"
+        android:theme="@style/BlueButton"
+        app:layout_constraintStart_toEndOf="@+id/updateButton"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="11dp" />
+
     <TextView
         android:id="@+id/detailedViewDate"
         android:layout_width="wrap_content"
