@@ -20,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Datum"
+        android:hint="date yyyy-mm-dd"
         app:layout_constraintTop_toBottomOf="@+id/updateButton"
         tools:layout_editor_absoluteX="101dp"
         tools:ignore="MissingConstraints" />
@@ -30,6 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:text="Uhrzeit"
+        android:hint="start time hh:mm:ss"
         app:layout_constraintTop_toBottomOf="@+id/detailedViewDate"
         tools:layout_editor_absoluteX="101dp"
         tools:ignore="MissingConstraints" />
@@ -40,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="Beschreibung"
+        android:hint="description"
         app:layout_constraintTop_toBottomOf="@+id/detailedViewTime"
         tools:layout_editor_absoluteX="101dp" />
 
@@ -49,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:text="Dauer"
+        android:hint="duration hh:mm:ss"
         app:layout_constraintTop_toBottomOf="@+id/detailedViewDescription"
         tools:layout_editor_absoluteX="101dp" />
 
@@ -58,6 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:text="Wiederholend?"
+        android:hint="repetable"
         app:layout_constraintTop_toBottomOf="@+id/detailedViewDuration"
         tools:layout_editor_absoluteX="101dp" />
 
@@ -67,6 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Wiederholungstyp"
+        android:hint="repeat type"
         app:layout_constraintTop_toBottomOf="@+id/detailedViewIsRepeating"
         tools:layout_editor_absoluteX="101dp" />
 
@@ -76,6 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Wiederholen bis"
+        android:hint="repeat until"
         app:layout_constraintTop_toBottomOf="@+id/detailedViewRepeatType"
         tools:layout_editor_absoluteX="101dp" />
 
