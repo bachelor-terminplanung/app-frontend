@@ -1,0 +1,12 @@
+<!-- res/layout/custom_calendar_layout.xml -->
+<GridView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gridView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:numColumns="7"
+    android:horizontalSpacing="2dp"
+    android:verticalSpacing="2dp"
+    android:stretchMode="columnWidth"
+    android:gravity="center"
+    android:background="@android:color/white"/>
