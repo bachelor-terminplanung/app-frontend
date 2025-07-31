@@ -17,15 +17,6 @@ public class DetailedCalendar extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_calendar_view);
-
-        event = getIntent().getParcelableExtra("event");
-
-        if (event == null) {
-            Log.e("DetailedViewActivity", "Kein Event empfangen!");
-            finish();
-            return;
-        }
-
         Button deleteButton = findViewById(R.id.deleteButton);
         Button updateButton = findViewById(R.id.updateButton);
         TextView date = findViewById(R.id.detailedViewDate);
@@ -36,25 +27,39 @@ public class DetailedCalendar extends AppCompatActivity {
         TextView repeatType = findViewById(R.id.detailedViewRepeatType);
         TextView repeatUntil = findViewById(R.id.detailedViewRepeatUntil);
 
-        event.date = String.valueOf(date.getText());
-        event.time = (String) time.getText();
-        event.description = (String) description.getText();
-        event.duration = parseDurationToMinutes(duration.getText().toString().trim());
-        event.isRepeating = Boolean.parseBoolean(isRepeating.getText().toString().trim());
-        event.repeatType = (String) repeatType.getText();
-        event.repeatUntil = (String) repeatUntil.getText();
-
-
         updateButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, UpdateEvent.class);
-            intent.putExtra("event", event);
-            startActivity(intent);
+            startIntent(date, time, description, duration, isRepeating, repeatType, repeatUntil, UpdateEvent.class);
         });
+
 
         deleteButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, DeleteEvent.class);
-            intent.putExtra("event", event);
-            startActivity(intent);
+            startIntent(date, time, description, duration, isRepeating, repeatType, repeatUntil, DeleteEvent.class);
         });
+
+    }
+
+    private void startIntent(TextView date, TextView time, TextView description, TextView duration, TextView isRepeating, TextView repeatType, TextView repeatUntil, Class intentReceiverClass) {
+        String dateS = String.valueOf(date.getText());
+        String timeS = (String) time.getText();
+        String descriptionS = (String) description.getText();
+        int durationS = parseDurationToMinutes(duration.getText().toString().trim());
+        boolean isRepeatingS = Boolean.parseBoolean(isRepeating.getText().toString().trim());
+        String repeatTypeS = (String) repeatType.getText();
+        String repeatUntilS = (String) repeatUntil.getText();
+
+        Event updatedEvent = new Event(
+                descriptionS,
+                dateS,
+                timeS,
+                durationS,
+                isRepeatingS,
+                repeatTypeS,
+                repeatUntilS
+        );
+        Log.d("EVENT", "event delete: " + updatedEvent.toString());
+
+        Intent intent = new Intent(this, intentReceiverClass);
+        intent.putExtra("event", updatedEvent);
+        startActivity(intent);
     }
 }
