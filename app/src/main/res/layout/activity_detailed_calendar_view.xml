@@ -10,21 +10,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Aktualisieren"
+        android:layout_marginTop="100dp"
         android:theme="@style/BlueButton"
-        tools:layout_editor_absoluteX="137dp"
-        tools:layout_editor_absoluteY="11dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="153dp"
+        tools:layout_editor_absoluteY="86dp" />
 
     <Button
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
+        android:layout_marginTop="108dp"
         android:text="Löschen"
         android:theme="@style/BlueButton"
-        app:layout_constraintStart_toEndOf="@+id/updateButton"
+        app:layout_constraintTop_toBottomOf="@+id/updateButton"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="11dp" />
+        tools:layout_editor_absoluteX="153dp" />
 
     <TextView
         android:id="@+id/detailedViewDate"
@@ -32,7 +33,7 @@
         android:layout_height="wrap_content"
         android:text="Datum"
         android:hint="date yyyy-mm-dd"
-        app:layout_constraintTop_toBottomOf="@+id/updateButton"
+        app:layout_constraintTop_toBottomOf="@+id/deleteButton"
         tools:layout_editor_absoluteX="101dp"
         tools:ignore="MissingConstraints" />
 
