@@ -63,4 +63,7 @@ dependencies {
     implementation ("com.google.android.gms:play-services-vision:20.1.3")
     implementation ("com.google.mlkit:text-recognition:16.0.0-beta3")
 
+    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
+
+
 }
