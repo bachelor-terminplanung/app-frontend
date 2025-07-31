@@ -2,6 +2,8 @@ package at.terminplaner;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,10 +21,13 @@ public class DeleteEvent extends AppCompatActivity {
     private static final String BASE_URL = "http://192.168.10.28:3000/event";
     private static final OkHttpClient client = new OkHttpClient();
     private Event event;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.loading_screen);
+        progressBar = findViewById(R.id.progressBar);
 
         event = getIntent().getParcelableExtra("event");
 
@@ -31,6 +36,7 @@ public class DeleteEvent extends AppCompatActivity {
             @Override
             public void onEventIdReceived(int eventId) {
                 runOnUiThread(() -> {
+                    progressBar.setVisibility(View.VISIBLE);
                     deleteEvent(eventId, new Callback() {
                         @Override
                         public void onFailure(okhttp3.Call call, IOException e) {
@@ -48,6 +54,7 @@ public class DeleteEvent extends AppCompatActivity {
                             });
                         }
                     });
+                    progressBar.setVisibility(View.GONE);
                 });
             }
 
