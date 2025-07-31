@@ -1,6 +1,11 @@
 package at.terminplaner;
 
+import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +18,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-public class Event {
+public class Event implements Parcelable {
     public String description;
     public String date;
     public String time;
@@ -31,6 +36,28 @@ public class Event {
         this.repeatType = repeatType;
         this.repeatUntil = repeatUntil;
     }
+
+    protected Event(Parcel in) {
+        description = in.readString();
+        date = in.readString();
+        time = in.readString();
+        duration = in.readInt();
+        isRepeating = in.readByte() != 0;
+        repeatType = in.readString();
+        repeatUntil = in.readString();
+    }
+
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 
     public String getDescription() {
         return description;
@@ -132,4 +159,21 @@ public class Event {
         });
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(description);
+        parcel.writeString(date);
+        parcel.writeString(time);
+        parcel.writeInt(duration);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            parcel.writeBoolean(isRepeating);
+        }
+        parcel.writeString(repeatType);
+        parcel.writeString(repeatUntil);
+    }
 }
