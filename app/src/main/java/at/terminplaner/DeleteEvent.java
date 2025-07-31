@@ -1,11 +1,7 @@
 package at.terminplaner;
 
-import static at.terminplaner.UpdateEvent.parseDurationToMinutes;
-
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,15 +12,12 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 
 public class DeleteEvent extends AppCompatActivity {
     private static final String BASE_URL = "http://192.168.10.28:3000/event";
     private static final OkHttpClient client = new OkHttpClient();
-    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private Event event;
 
     @Override

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class DetailedCalendar extends AppCompatActivity {
-    private Event event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
