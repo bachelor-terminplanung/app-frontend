@@ -28,7 +28,6 @@ public class UpdateEvent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detailed_calendar_view);
 
         event = getIntent().getParcelableExtra("event");
 
@@ -41,15 +40,18 @@ public class UpdateEvent extends AppCompatActivity {
                         updateEvent(inputEvent, eventId, new Callback() {
                             @Override
                             public void onFailure(okhttp3.Call call, IOException e) {
-                                runOnUiThread(() ->
-                                        Toast.makeText(UpdateEvent.this, "Update fehlgeschlagen", Toast.LENGTH_SHORT).show()
-                                );
+                                runOnUiThread(() -> {
+                                        Toast.makeText(UpdateEvent.this, "Update fehlgeschlagen", Toast.LENGTH_SHORT).show();
+                                        finish();
+                            });
                             }
                             @Override
                             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                                runOnUiThread(() ->
-                                        Toast.makeText(UpdateEvent.this, "Event aktualisiert", Toast.LENGTH_SHORT).show()
-                                );
+                                runOnUiThread(() -> {
+                                    Toast.makeText(UpdateEvent.this, "Event aktualisiert", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                });
+
                             }
                         });
                     });
@@ -58,9 +60,10 @@ public class UpdateEvent extends AppCompatActivity {
 
             @Override
             public void onError(String errorMessage) {
-                runOnUiThread(() ->
-                        Toast.makeText(UpdateEvent.this, "Fehler beim Finden des Events: " + errorMessage, Toast.LENGTH_LONG).show()
-                );
+                runOnUiThread(() -> {
+                    Toast.makeText(UpdateEvent.this, "Fehler beim Finden des Events: " + errorMessage, Toast.LENGTH_LONG).show();
+                    finish();
+                });
             }
         });
     }
