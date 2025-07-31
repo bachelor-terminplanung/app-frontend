@@ -23,64 +23,46 @@ public class UpdateEvent extends AppCompatActivity {
     private static final String BASE_URL = "http://192.168.10.28:3000/event";
     private static final OkHttpClient client = new OkHttpClient();
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+    private Event event;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_calendar_view);
 
-        Button updateButton = findViewById(R.id.updateButton);
-        TextView date = findViewById(R.id.detailedViewDate);
-        TextView time = findViewById(R.id.detailedViewTime);
-        TextView description = findViewById(R.id.detailedViewDescription);
-        TextView duration = findViewById(R.id.detailedViewDuration);
-        TextView isRepeating = findViewById(R.id.detailedViewIsRepeating);
-        TextView repeatType = findViewById(R.id.detailedViewRepeatType);
-        TextView repeatUntil = findViewById(R.id.detailedViewRepeatUntil);
+        event = getIntent().getParcelableExtra("event");
 
-        String dateS = String.valueOf(date.getText());
-        String timeS = (String) time.getText();
-        String descriptionS = (String) description.getText();
-        int durationS = parseDurationToMinutes(duration.getText().toString().trim());
-        boolean isRepeatingS = Boolean.parseBoolean(isRepeating.getText().toString().trim());
-        String repeatTypeS = (String) repeatType.getText();
-        String repeatUntilS = (String) repeatUntil.getText();
-
-        updateButton.setOnClickListener(v -> {
-            Event event = new Event(descriptionS, dateS ,timeS, durationS, isRepeatingS, repeatTypeS, repeatUntilS);
-            Log.d("EVENT", "event: " + event.toString());
-            event.getEventID(new EventIdCallback() {
-                @Override
-                public void onEventIdReceived(int eventId) {
-                    runOnUiThread(() -> {
-                        EventPopUp.showDetailedPopup(UpdateEvent.this, event, false, true, inputEvent -> {
-                            updateEvent(inputEvent, eventId, new Callback() {
-                                @Override
-                                public void onFailure(okhttp3.Call call, IOException e) {
-                                    runOnUiThread(() ->
-                                            Toast.makeText(UpdateEvent.this, "Update fehlgeschlagen", Toast.LENGTH_SHORT).show()
-                                    );
-                                }
-
-                                @Override
-                                public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                                    runOnUiThread(() ->
-                                            Toast.makeText(UpdateEvent.this, "Event aktualisiert", Toast.LENGTH_SHORT).show()
-                                    );
-                                }
-                            });
+        Log.d("EVENT", "event: " + event.toString());
+        event.getEventID(new EventIdCallback() {
+            @Override
+            public void onEventIdReceived(int eventId) {
+                runOnUiThread(() -> {
+                    EventPopUp.showDetailedPopup(UpdateEvent.this, event, false, true, inputEvent -> {
+                        updateEvent(inputEvent, eventId, new Callback() {
+                            @Override
+                            public void onFailure(okhttp3.Call call, IOException e) {
+                                runOnUiThread(() ->
+                                        Toast.makeText(UpdateEvent.this, "Update fehlgeschlagen", Toast.LENGTH_SHORT).show()
+                                );
+                            }
+                            @Override
+                            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                                runOnUiThread(() ->
+                                        Toast.makeText(UpdateEvent.this, "Event aktualisiert", Toast.LENGTH_SHORT).show()
+                                );
+                            }
                         });
                     });
-                }
+                });
+            }
 
-                @Override
-                public void onError(String errorMessage) {
-                    runOnUiThread(() ->
-                            Toast.makeText(UpdateEvent.this, "Fehler beim Finden des Events: " + errorMessage, Toast.LENGTH_LONG).show()
-                    );
-                }
-            });
+            @Override
+            public void onError(String errorMessage) {
+                runOnUiThread(() ->
+                        Toast.makeText(UpdateEvent.this, "Fehler beim Finden des Events: " + errorMessage, Toast.LENGTH_LONG).show()
+                );
+            }
         });
-
     }
     public static int parseDurationToMinutes(String time) {
         String[] parts = time.split(":");
