@@ -32,7 +32,31 @@ public class DetailedCalendar extends AppCompatActivity {
 
 
         deleteButton.setOnClickListener(v -> {
-            startIntent(date, time, description, duration, isRepeating, repeatType, repeatUntil, DeleteEvent.class);
+            String dateS = date.getText().toString();
+            String timeS = time.getText().toString();
+            String descriptionS = description.getText().toString();
+            int durationS = parseDurationToMinutes(duration.getText().toString().trim());
+            boolean isRepeatingS = Boolean.parseBoolean(isRepeating.getText().toString().trim());
+            String repeatTypeS = repeatType.getText().toString();
+            String repeatUntilS = repeatUntil.getText().toString();
+
+            Event event = new Event(
+                    descriptionS,
+                    dateS,
+                    timeS,
+                    durationS,
+                    isRepeatingS,
+                    repeatTypeS,
+                    repeatUntilS
+            );
+
+            // show fragment
+            DeleteEventFragment fragment = DeleteEventFragment.newInstance(event);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(android.R.id.content, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
 
     }
