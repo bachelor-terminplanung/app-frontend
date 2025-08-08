@@ -26,7 +26,6 @@ public class DeleteEvent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.loading_screen);
         progressBar = findViewById(R.id.progressBar);
 
         event = getIntent().getParcelableExtra("event");
