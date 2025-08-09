@@ -31,7 +31,7 @@
         android:id="@+id/detailedViewDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Datum"
+        android:text="2000-08-08"
         android:hint="date yyyy-mm-dd"
         app:layout_constraintTop_toBottomOf="@+id/deleteButton"
         tools:layout_editor_absoluteX="101dp"
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:text="Uhrzeit"
+        android:text="00:00:00"
         android:hint="start time hh:mm:ss"
         app:layout_constraintTop_toBottomOf="@+id/detailedViewDate"
         tools:layout_editor_absoluteX="101dp"
@@ -53,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Beschreibung"
+        android:text="0"
         android:hint="description"
         app:layout_constraintTop_toBottomOf="@+id/detailedViewTime"
         tools:layout_editor_absoluteX="101dp" />
@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:text="Dauer"
+        android:text="00:00:00"
         android:hint="duration hh:mm:ss"
         app:layout_constraintTop_toBottomOf="@+id/detailedViewDescription"
         tools:layout_editor_absoluteX="101dp" />
@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:text="Wiederholend?"
+        android:text="0"
         android:hint="repetable"
         app:layout_constraintTop_toBottomOf="@+id/detailedViewDuration"
         tools:layout_editor_absoluteX="101dp" />
@@ -83,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:text="Wiederholungstyp"
+        android:text="Täglich"
         android:hint="repeat type"
         app:layout_constraintTop_toBottomOf="@+id/detailedViewIsRepeating"
         tools:layout_editor_absoluteX="101dp" />
@@ -93,9 +93,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Wiederholen bis"
+        android:text=""
         android:hint="repeat until"
         app:layout_constraintTop_toBottomOf="@+id/detailedViewRepeatType"
         tools:layout_editor_absoluteX="101dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/loadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#AA000000"
+        android:visibility="gone"
+        android:gravity="center">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</FrameLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
