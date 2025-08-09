@@ -27,15 +27,21 @@
             android:exported="false"/>
         <activity
             android:name=".CloudOCR"
+            android:exported="false"/>
+        <activity
+            android:name=".UpdateEvent"
+            android:exported="false"/>
+        <activity
+            android:name=".DeleteEvent"
+            android:exported="false"/>
+        <activity
+            android:name=".DetailedCalendar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".UpdateEvent"
-            android:exported="false"/>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="at.terminplaner.fileprovider"
