@@ -27,9 +27,23 @@ public class DetailedCalendar extends AppCompatActivity {
         TextView repeatUntil = findViewById(R.id.detailedViewRepeatUntil);
 
         updateButton.setOnClickListener(v -> {
-            startIntent(date, time, description, duration, isRepeating, repeatType, repeatUntil, UpdateEvent.class);
-        });
+            Event event = new Event(
+                    description.getText().toString(),
+                    date.getText().toString(),
+                    time.getText().toString(),
+                    parseDurationToMinutes(duration.getText().toString().trim()),
+                    Boolean.parseBoolean(isRepeating.getText().toString().trim()),
+                    repeatType.getText().toString(),
+                    repeatUntil.getText().toString()
+            );
 
+            UpdateEventFragment fragment = UpdateEventFragment.newInstance(event);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.loadingOverlay, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         deleteButton.setOnClickListener(v -> {
             String dateS = date.getText().toString();
