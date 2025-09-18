@@ -1,6 +1,24 @@
 package at.terminplaner;
 
-public class Event {
+import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
+public class Event implements Parcelable {
     public String description;
     public String date;
     public String time;
@@ -18,6 +36,28 @@ public class Event {
         this.repeatType = repeatType;
         this.repeatUntil = repeatUntil;
     }
+
+    protected Event(Parcel in) {
+        description = in.readString();
+        date = in.readString();
+        time = in.readString();
+        duration = in.readInt();
+        isRepeating = in.readByte() != 0;
+        repeatType = in.readString();
+        repeatUntil = in.readString();
+    }
+
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 
     public String getDescription() {
         return description;
@@ -58,5 +98,82 @@ public class Event {
                 ", repeatType='" + repeatType + '\'' +
                 ", repeatUntil='" + repeatUntil + '\'' +
                 '}';
+    }
+
+
+    public  void getEventID(EventIdCallback callback) {
+        OkHttpClient client = new OkHttpClient();
+        MediaType JSON = MediaType.get("application/json; charset=utf-8");
+        String BASE_URL = "http://192.168.10.28:3000/event";
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("user_id", 1); //
+            jsonBody.put("event_date", getDate());
+            jsonBody.put("start_time", getTime());
+            jsonBody.put("description", getDescription());
+            jsonBody.put("duration", getDuration());
+            jsonBody.put("is_repeating", isRepeating());
+            jsonBody.put("repeat_type",getRepeatType());
+            if (getRepeatUntil() == null || getRepeatUntil().isEmpty()) {
+                jsonBody.put("repeat_until", "");
+            } else {
+                jsonBody.put("repeat_until", getRepeatUntil());
+            }
+        } catch (JSONException e) {
+            callback.onError("Fehler beim Erstellen des JSON-Objekts");
+            return;
+        }
+
+        RequestBody body = RequestBody.create(jsonBody.toString(), JSON);
+        Log.d("EVENT-BODY", "request body: " + jsonBody.toString());
+        Request request = new Request.Builder()
+                .url(BASE_URL + "/match")
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("EVENT-ID", "error: " );
+                callback.onError("Verbindungsfehler: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                String responseBody = response.body().string();
+                Log.d("EVENT-ID", "ResponseBody: " + responseBody);
+                if (!response.isSuccessful()) {
+                    callback.onError("Fehler: " + response.code());
+                    return;
+                }
+
+                try {
+                    JSONObject json = new JSONObject(responseBody);
+                    int id = json.getInt("eventId");
+                    Log.d("EVENT-ID", "id: " + id);
+                    callback.onEventIdReceived(id);
+                } catch (JSONException e) {
+                    callback.onError("Ungültige Serverantwort");
+                }
+            }
+        });
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(description);
+        parcel.writeString(date);
+        parcel.writeString(time);
+        parcel.writeInt(duration);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            parcel.writeBoolean(isRepeating);
+        }
+        parcel.writeString(repeatType);
+        parcel.writeString(repeatUntil);
     }
 }
