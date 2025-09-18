@@ -23,7 +23,7 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".calendar"
+            android:name=".Calendar"
             android:exported="false" />
         <activity
             android:name=".Camera"
