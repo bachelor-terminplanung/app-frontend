@@ -125,8 +125,8 @@ public class SignUpFragment extends Fragment {
                 requireActivity().runOnUiThread(() -> {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "Registrierung erfolgreich!", Toast.LENGTH_SHORT).show();
-                        Navigation.findNavController(requireView())
-                                .navigate(R.id.action_signUpFragment_to_loginFragment);
+                        NavHostFragment.findNavController(SignUpFragment.this)
+                                .navigate(R.id.action_signUpFragment_to_calendarFragment);
                     } else {
                         Toast.makeText(getContext(), "Serverfehler: " + responseBody, Toast.LENGTH_LONG).show();
                         Log.d("Fehler", responseBody);
@@ -150,7 +150,7 @@ public class SignUpFragment extends Fragment {
             String address = fragmentSignUpBinding.editTextEmail.getText().toString().trim();
             String password = fragmentSignUpBinding.editTextPassword.getText().toString();
             String confirmPassword = fragmentSignUpBinding.editTextConfirmPassword.getText().toString();
-            String color = "green"; // Default-Farbe, kann angepasst werden
+            String color = "yellow"; // Default-Farbe, kann angepasst werden
 
             if (!password.equals(confirmPassword)) {
                 Toast.makeText(getContext(), "Passwörter stimmen nicht überein", Toast.LENGTH_SHORT).show();
@@ -166,7 +166,7 @@ public class SignUpFragment extends Fragment {
         });
 
         fragmentSignUpBinding.textViewToLogin.setOnClickListener(view1 ->
-                Navigation.findNavController(requireView())
+                NavHostFragment.findNavController(SignUpFragment.this)
                         .navigate(R.id.action_signUpFragment_to_loginFragment)
         );
     }

@@ -4,9 +4,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +38,7 @@ public class LoginFragment extends Fragment {
     private String mParam2;
 
     private FragmentLoginBinding fragmentLoginBinding;
-    private static final String BASE_URL = "http://10.0.2.2:3000/register";
+    private static final String BASE_URL = "http://10.0.2.2:3000/login";
     private static final OkHttpClient client = new OkHttpClient();
 
     public LoginFragment() {
@@ -88,7 +88,7 @@ public class LoginFragment extends Fragment {
     private void loginUser(String username, String passwordHash) {
         String json = "{"
                 + "\"username\":\"" + username + "\","
-                + "\"password_hash\":\"" + passwordHash + "\""
+                + "\"password\":\"" + passwordHash + "\""
                 + "}";
 
         RequestBody body = RequestBody.create(
@@ -105,8 +105,8 @@ public class LoginFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 requireActivity().runOnUiThread(() ->
-                        Toast.makeText(getContext(), "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show()
-                );
+                        Toast.makeText(getContext(), "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                Log.d("Fehler", e.getMessage());
             }
 
             @Override
@@ -116,10 +116,11 @@ public class LoginFragment extends Fragment {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "Login erfolgreich!", Toast.LENGTH_SHORT).show();
 
-                        Navigation.findNavController(requireView())
+                        NavHostFragment.findNavController(LoginFragment.this)
                                 .navigate(R.id.action_loginFragment_to_calendarFragment);
                     } else {
                         Toast.makeText(getContext(), "Login fehlgeschlagen: " + responseBody, Toast.LENGTH_LONG).show();
+                        Log.d("Fehler", responseBody);
                     }
                 });
             }
@@ -131,7 +132,7 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         fragmentLoginBinding.buttonLogin.setOnClickListener(v -> {
-            String username = fragmentLoginBinding.editTextEmailLogin.getText().toString(); // Feld bleibt, aber es ist Username
+            String username = fragmentLoginBinding.editTextUsernameLogin.getText().toString();
             String password = fragmentLoginBinding.editTextPasswordLogin.getText().toString();
 
             if (username.isEmpty() || password.isEmpty()) {
@@ -143,7 +144,7 @@ public class LoginFragment extends Fragment {
         });
 
         fragmentLoginBinding.textViewToSignUp.setOnClickListener(view1 ->
-                Navigation.findNavController(requireView())
+                NavHostFragment.findNavController(LoginFragment.this)
                         .navigate(R.id.action_loginFragment_to_signUpFragment)
         );
     }

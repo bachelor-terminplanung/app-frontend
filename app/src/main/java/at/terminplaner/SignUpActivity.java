@@ -12,14 +12,5 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
-        // Prüfen, ob Fragment schon existiert
-        if (savedInstanceState == null) {
-            SignUpFragment signUpFragment = new SignUpFragment();
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.sign_up_container, signUpFragment);
-            ft.commit();
-        }
     }
 }
