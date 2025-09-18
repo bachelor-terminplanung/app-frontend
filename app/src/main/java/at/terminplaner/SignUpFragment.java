@@ -186,6 +186,8 @@ public class SignUpFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        testExistingUser("anna_a");
+
         fragmentSignUpBinding.buttonSignUp.setOnClickListener(v -> {
             String fullname = fragmentSignUpBinding.editTextFullName.getText().toString().trim();
             String[] parts = fullname.split(" ", 2);
@@ -196,7 +198,7 @@ public class SignUpFragment extends Fragment {
             String address = fragmentSignUpBinding.editTextEmail.getText().toString().trim();
             String password = fragmentSignUpBinding.editTextPassword.getText().toString();
             String confirmPassword = fragmentSignUpBinding.editTextConfirmPassword.getText().toString();
-            String color = "yellow"; // Default-Farbe, kann angepasst werden
+            String color = "orange"; // Default-Farbe, kann angepasst werden
 
             if (!password.equals(confirmPassword)) {
                 Toast.makeText(getContext(), "Passwörter stimmen nicht überein", Toast.LENGTH_SHORT).show();
@@ -215,5 +217,24 @@ public class SignUpFragment extends Fragment {
                 NavHostFragment.findNavController(SignUpFragment.this)
                         .navigate(R.id.action_signUpFragment_to_loginFragment)
         );
+    }
+
+    private void testExistingUser(String username) {
+        String url = "http://10.0.2.2:3000/user/id/" + username;
+
+        Request request = new Request.Builder().url(url).get().build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.d("TestExistingUser", "Fehler: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                String responseBody = response.body().string();
+                Log.d("TestExistingUser", "Antwort: " + responseBody);
+            }
+        });
     }
 }
