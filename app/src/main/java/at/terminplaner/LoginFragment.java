@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
@@ -37,7 +38,7 @@ public class LoginFragment extends Fragment {
     private String mParam2;
 
     private FragmentLoginBinding fragmentLoginBinding;
-    private static final String BASE_URL = "http://10.12.216.245:3000/login";
+    private static final String BASE_URL = "http://10.0.2.2:3000/register";
     private static final OkHttpClient client = new OkHttpClient();
 
     public LoginFragment() {
@@ -115,7 +116,7 @@ public class LoginFragment extends Fragment {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "Login erfolgreich!", Toast.LENGTH_SHORT).show();
 
-                        NavHostFragment.findNavController(LoginFragment.this)
+                        Navigation.findNavController(requireView())
                                 .navigate(R.id.action_loginFragment_to_calendarFragment);
                     } else {
                         Toast.makeText(getContext(), "Login fehlgeschlagen: " + responseBody, Toast.LENGTH_LONG).show();
@@ -142,7 +143,7 @@ public class LoginFragment extends Fragment {
         });
 
         fragmentLoginBinding.textViewToSignUp.setOnClickListener(view1 ->
-                NavHostFragment.findNavController(LoginFragment.this)
+                Navigation.findNavController(requireView())
                         .navigate(R.id.action_loginFragment_to_signUpFragment)
         );
     }

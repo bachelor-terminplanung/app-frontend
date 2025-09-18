@@ -4,15 +4,18 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewbinding.ViewBinding;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import at.terminplaner.databinding.FragmentSignUpBinding;
 import okhttp3.Call;
@@ -39,7 +42,7 @@ public class SignUpFragment extends Fragment {
     private String mParam2;
 
     private FragmentSignUpBinding fragmentSignUpBinding;
-    private static final String BASE_URL = "http://10.12.216.245:3000/register";
+    private static final String BASE_URL = "http://10.0.2.2:3000/register";
     private static final OkHttpClient client = new OkHttpClient();
 
     public SignUpFragment() {
@@ -87,13 +90,15 @@ public class SignUpFragment extends Fragment {
         fragmentSignUpBinding = null;
     }
 
-    private void registerUser(String firstName, String lastName, String email, String username, String passwordHash) {
+    private void registerUser(String firstName, String lastName, String color,
+                              String address, String username, String password) {
         String json = "{"
-                + "\"first_name\":\"" + firstName + "\","
-                + "\"last_name\":\"" + lastName + "\","
-                + "\"address\":\"" + email + "\","
+                + "\"firstName\":\"" + firstName + "\","
+                + "\"lastName\":\"" + lastName + "\","
+                + "\"color\":\"" + color + "\","
+                + "\"address\":\"" + address + "\","
                 + "\"username\":\"" + username + "\","
-                + "\"password_hash\":\"" + passwordHash + "\""
+                + "\"password\":\"" + password + "\""
                 + "}";
 
         RequestBody body = RequestBody.create(
@@ -110,8 +115,8 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 requireActivity().runOnUiThread(() ->
-                        Toast.makeText(getContext(), "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show()
-                );
+                        Toast.makeText(getContext(), "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                Log.d("Fehler", e.getMessage());
             }
 
             @Override
@@ -120,10 +125,11 @@ public class SignUpFragment extends Fragment {
                 requireActivity().runOnUiThread(() -> {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "Registrierung erfolgreich!", Toast.LENGTH_SHORT).show();
-                        NavHostFragment.findNavController(SignUpFragment.this)
+                        Navigation.findNavController(requireView())
                                 .navigate(R.id.action_signUpFragment_to_loginFragment);
                     } else {
                         Toast.makeText(getContext(), "Serverfehler: " + responseBody, Toast.LENGTH_LONG).show();
+                        Log.d("Fehler", responseBody);
                     }
                 });
             }
@@ -135,26 +141,32 @@ public class SignUpFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         fragmentSignUpBinding.buttonSignUp.setOnClickListener(v -> {
-            String fullname = fragmentSignUpBinding.editTextFullName.getText().toString();
-            String username = fragmentSignUpBinding.editTextUsername.getText().toString();
-            String email = fragmentSignUpBinding.editTextEmail.getText().toString();
+            String fullname = fragmentSignUpBinding.editTextFullName.getText().toString().trim();
+            String[] parts = fullname.split(" ", 2);
+            String firstName = parts.length > 0 ? parts[0] : "";
+            String lastName = parts.length > 1 ? parts[1] : "";
+
+            String username = fragmentSignUpBinding.editTextUsername.getText().toString().trim();
+            String address = fragmentSignUpBinding.editTextEmail.getText().toString().trim();
             String password = fragmentSignUpBinding.editTextPassword.getText().toString();
             String confirmPassword = fragmentSignUpBinding.editTextConfirmPassword.getText().toString();
+            String color = "green"; // Default-Farbe, kann angepasst werden
 
             if (!password.equals(confirmPassword)) {
                 Toast.makeText(getContext(), "Passwörter stimmen nicht überein", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            String[] parts = fullname.split(" ", 2);
-            String firstName = parts.length > 0 ? parts[0] : "";
-            String lastName = parts.length > 1 ? parts[1] : "";
+            if (firstName.isEmpty() || lastName.isEmpty() || password.isEmpty()) {
+                Toast.makeText(getContext(), "Bitte Vorname, Nachname und Passwort eingeben", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-            registerUser(firstName, lastName, email, username, password);
+            registerUser(firstName, lastName, color, address, username, password);
         });
 
         fragmentSignUpBinding.textViewToLogin.setOnClickListener(view1 ->
-                NavHostFragment.findNavController(SignUpFragment.this)
+                Navigation.findNavController(requireView())
                         .navigate(R.id.action_signUpFragment_to_loginFragment)
         );
     }
