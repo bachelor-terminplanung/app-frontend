@@ -10,8 +10,16 @@ import androidx.viewbinding.ViewBinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 import at.terminplaner.databinding.FragmentSignUpBinding;
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +39,8 @@ public class SignUpFragment extends Fragment {
     private String mParam2;
 
     private FragmentSignUpBinding fragmentSignUpBinding;
+    private static final String BASE_URL = "http://10.12.216.245:3000/register";
+    private static final OkHttpClient client = new OkHttpClient();
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -77,23 +87,75 @@ public class SignUpFragment extends Fragment {
         fragmentSignUpBinding = null;
     }
 
+    private void registerUser(String firstName, String lastName, String email, String username, String passwordHash) {
+        String json = "{"
+                + "\"first_name\":\"" + firstName + "\","
+                + "\"last_name\":\"" + lastName + "\","
+                + "\"address\":\"" + email + "\","
+                + "\"username\":\"" + username + "\","
+                + "\"password_hash\":\"" + passwordHash + "\""
+                + "}";
+
+        RequestBody body = RequestBody.create(
+                json,
+                okhttp3.MediaType.parse("application/json; charset=utf-8")
+        );
+
+        Request request = new Request.Builder()
+                .url(BASE_URL)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                requireActivity().runOnUiThread(() ->
+                        Toast.makeText(getContext(), "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                String responseBody = response.body().string();
+                requireActivity().runOnUiThread(() -> {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getContext(), "Registrierung erfolgreich!", Toast.LENGTH_SHORT).show();
+                        NavHostFragment.findNavController(SignUpFragment.this)
+                                .navigate(R.id.action_signUpFragment_to_loginFragment);
+                    } else {
+                        Toast.makeText(getContext(), "Serverfehler: " + responseBody, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        fragmentSignUpBinding.buttonSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(SignUpFragment.this)
-                        .navigate(R.id.action_signUpFragment_to_calendarFragment);
+        fragmentSignUpBinding.buttonSignUp.setOnClickListener(v -> {
+            String fullname = fragmentSignUpBinding.editTextFullName.getText().toString();
+            String username = fragmentSignUpBinding.editTextUsername.getText().toString();
+            String email = fragmentSignUpBinding.editTextEmail.getText().toString();
+            String password = fragmentSignUpBinding.editTextPassword.getText().toString();
+            String confirmPassword = fragmentSignUpBinding.editTextConfirmPassword.getText().toString();
+
+            if (!password.equals(confirmPassword)) {
+                Toast.makeText(getContext(), "Passwörter stimmen nicht überein", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            String[] parts = fullname.split(" ", 2);
+            String firstName = parts.length > 0 ? parts[0] : "";
+            String lastName = parts.length > 1 ? parts[1] : "";
+
+            registerUser(firstName, lastName, email, username, password);
         });
 
-        fragmentSignUpBinding.textViewToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        fragmentSignUpBinding.textViewToLogin.setOnClickListener(view1 ->
                 NavHostFragment.findNavController(SignUpFragment.this)
-                        .navigate(R.id.action_signUpFragment_to_loginFragment);
-            }
-        });
+                        .navigate(R.id.action_signUpFragment_to_loginFragment)
+        );
     }
 }

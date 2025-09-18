@@ -9,8 +9,16 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 import at.terminplaner.databinding.FragmentLoginBinding;
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +37,8 @@ public class LoginFragment extends Fragment {
     private String mParam2;
 
     private FragmentLoginBinding fragmentLoginBinding;
+    private static final String BASE_URL = "http://10.12.216.245:3000/login";
+    private static final OkHttpClient client = new OkHttpClient();
 
     public LoginFragment() {
         // Required empty public constructor
@@ -64,7 +74,6 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         fragmentLoginBinding = FragmentLoginBinding.inflate(inflater, container, false);
         return fragmentLoginBinding.getRoot();
     }
@@ -75,23 +84,67 @@ public class LoginFragment extends Fragment {
         fragmentLoginBinding = null;
     }
 
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private void loginUser(String username, String passwordHash) {
+        String json = "{"
+                + "\"username\":\"" + username + "\","
+                + "\"password_hash\":\"" + passwordHash + "\""
+                + "}";
 
-        fragmentLoginBinding.buttonLogin.setOnClickListener(new View.OnClickListener() {
+        RequestBody body = RequestBody.create(
+                json,
+                okhttp3.MediaType.parse("application/json; charset=utf-8")
+        );
+
+        Request request = new Request.Builder()
+                .url(BASE_URL)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
             @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(LoginFragment.this)
-                        .navigate(R.id.action_loginFragment_to_calendarFragment);
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                requireActivity().runOnUiThread(() ->
+                        Toast.makeText(getContext(), "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
             }
-        });
 
-        fragmentLoginBinding.textViewToSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(LoginFragment.this)
-                        .navigate(R.id.action_loginFragment_to_signUpFragment);
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                String responseBody = response.body().string();
+                requireActivity().runOnUiThread(() -> {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getContext(), "Login erfolgreich!", Toast.LENGTH_SHORT).show();
+
+                        NavHostFragment.findNavController(LoginFragment.this)
+                                .navigate(R.id.action_loginFragment_to_calendarFragment);
+                    } else {
+                        Toast.makeText(getContext(), "Login fehlgeschlagen: " + responseBody, Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        fragmentLoginBinding.buttonLogin.setOnClickListener(v -> {
+            String username = fragmentLoginBinding.editTextEmailLogin.getText().toString(); // Feld bleibt, aber es ist Username
+            String password = fragmentLoginBinding.editTextPasswordLogin.getText().toString();
+
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(getContext(), "Bitte Benutzername und Passwort eingeben", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            loginUser(username, password);
+        });
+
+        fragmentLoginBinding.textViewToSignUp.setOnClickListener(view1 ->
+                NavHostFragment.findNavController(LoginFragment.this)
+                        .navigate(R.id.action_loginFragment_to_signUpFragment)
+        );
+    }
+
 }
