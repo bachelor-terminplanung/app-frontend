@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.Objects;
 
@@ -124,14 +126,58 @@ public class SignUpFragment extends Fragment {
                 String responseBody = response.body().string();
                 requireActivity().runOnUiThread(() -> {
                     if (response.isSuccessful()) {
+                        fetchUserId(username); //holt und speichert die Id über den Username
                         Toast.makeText(getContext(), "Registrierung erfolgreich!", Toast.LENGTH_SHORT).show();
                         NavHostFragment.findNavController(SignUpFragment.this)
                                 .navigate(R.id.action_signUpFragment_to_calendarFragment);
                     } else {
                         Toast.makeText(getContext(), "Serverfehler: " + responseBody, Toast.LENGTH_LONG).show();
-                        Log.d("Fehler", responseBody);
+                        Log.d("Serverfehler", responseBody);
                     }
                 });
+            }
+        });
+    }
+
+    private void fetchUserId(String username) {
+        String url = "http://10.0.2.2:3000/user/id/" + username;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                requireActivity().runOnUiThread(() ->
+                        Toast.makeText(getContext(), "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                String responseBody = response.body().string();
+                if (response.isSuccessful()) {
+                    try {
+                        JSONObject json = new JSONObject(responseBody);
+                        int id = json.getInt("id");
+
+                        // ID in globaler Variable speichern
+                        ((MyApp) requireActivity().getApplication()).setUserId(id);
+
+                        requireActivity().runOnUiThread(() ->
+                                Toast.makeText(getContext(), "User-ID gesetzt: " + id, Toast.LENGTH_SHORT).show()
+                        );
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    requireActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), "Serverfehler: " + responseBody, Toast.LENGTH_LONG).show()
+                    );
+                }
             }
         });
     }
