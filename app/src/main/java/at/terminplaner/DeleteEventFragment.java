@@ -22,7 +22,7 @@ import okhttp3.Response;
 
 public class DeleteEventFragment extends Fragment {
 
-    private static final String BASE_URL = "http://10.12.216.245:3000/event";
+    private static final String BASE_URL = "http://192.168.10.28:3000/event";
     private static final OkHttpClient client = new OkHttpClient();
     private Event event;
     private ProgressBar progressBar;
