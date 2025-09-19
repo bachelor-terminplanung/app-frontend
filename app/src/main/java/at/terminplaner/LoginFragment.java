@@ -38,7 +38,7 @@ public class LoginFragment extends Fragment {
     private String mParam2;
 
     private FragmentLoginBinding fragmentLoginBinding;
-    private static final String BASE_URL = "http://10.0.2.2:3000/login";
+    private static final String BASE_URL = "http://192.168.10.28:3000/login";
     private static final OkHttpClient client = new OkHttpClient();
 
     public LoginFragment() {
@@ -114,10 +114,11 @@ public class LoginFragment extends Fragment {
                 String responseBody = response.body().string();
                 requireActivity().runOnUiThread(() -> {
                     if (response.isSuccessful()) {
-                        Toast.makeText(getContext(), "Login erfolgreich!", Toast.LENGTH_SHORT).show();
-
-                        NavHostFragment.findNavController(LoginFragment.this)
-                                .navigate(R.id.action_loginFragment_to_calendarFragment);
+                        User.fetchUserId(LoginFragment.this, username, () -> {
+                            Toast.makeText(getContext(), "Login erfolgreich!", Toast.LENGTH_SHORT).show();
+                            NavHostFragment.findNavController(LoginFragment.this)
+                                    .navigate(R.id.action_loginFragment_to_calendarFragment);
+                        });
                     } else {
                         Toast.makeText(getContext(), "Login fehlgeschlagen: " + responseBody, Toast.LENGTH_LONG).show();
                         Log.d("Fehler", responseBody);
