@@ -31,7 +31,7 @@ public class DeleteEvent extends AppCompatActivity {
         event = getIntent().getParcelableExtra("event");
 
         Log.d("EVENT", "event: " + event.toString());
-        event.getEventID(new EventIdCallback() {
+        event.getEventID(DeleteEvent.this, new EventIdCallback() {
             @Override
             public void onEventIdReceived(int eventId) {
                 runOnUiThread(() -> {
@@ -40,16 +40,16 @@ public class DeleteEvent extends AppCompatActivity {
                         @Override
                         public void onFailure(okhttp3.Call call, IOException e) {
                             runOnUiThread(() -> {
-                                    Toast.makeText(DeleteEvent.this, "Löschen fehlgeschlagen", Toast.LENGTH_SHORT).show();
-                                    finish();
-                        });
+                                Toast.makeText(DeleteEvent.this, "Löschen fehlgeschlagen", Toast.LENGTH_SHORT).show();
+                                finish();
+                            });
                         }
 
                         @Override
                         public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                             runOnUiThread(() -> {
-                                    Toast.makeText(DeleteEvent.this, "Event gelöscht", Toast.LENGTH_SHORT).show();
-                                    finish();
+                                Toast.makeText(DeleteEvent.this, "Event gelöscht", Toast.LENGTH_SHORT).show();
+                                finish();
                             });
                         }
                     });
@@ -60,8 +60,8 @@ public class DeleteEvent extends AppCompatActivity {
             @Override
             public void onError(String errorMessage) {
                 runOnUiThread(() -> {
-                        Toast.makeText(DeleteEvent.this, "Fehler beim Finden des Events: " + errorMessage, Toast.LENGTH_LONG).show();
-                        finish();
+                    Toast.makeText(DeleteEvent.this, "Fehler beim Finden des Events: " + errorMessage, Toast.LENGTH_LONG).show();
+                    finish();
                 });
             }
         });

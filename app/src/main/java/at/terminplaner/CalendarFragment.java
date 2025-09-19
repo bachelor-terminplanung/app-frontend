@@ -1,12 +1,16 @@
 package at.terminplaner;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +27,8 @@ public class CalendarFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private Button ocrButton;
+    private Button detailButton;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -47,12 +53,31 @@ public class CalendarFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        ocrButton = view.findViewById(R.id.addEvent);
+        detailButton = view.findViewById(R.id.detailButton);
+
+        ocrButton.setOnClickListener(v -> {
+            int userId = ((MyApp) requireActivity().getApplication()).getUserId();
+
+            if (userId == 0) {
+                Toast.makeText(getContext(), "Benutzer-ID noch nicht erkannt", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(getActivity(), CloudOCR.class);
+                startActivity(intent);
+            }
+        });
+        detailButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), DetailedCalendar.class);
+            startActivity(intent);
+        });
+
     }
 
     @Override

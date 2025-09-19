@@ -1,5 +1,6 @@
 package at.terminplaner;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -101,13 +102,15 @@ public class Event implements Parcelable {
     }
 
 
-    public  void getEventID(EventIdCallback callback) {
+    public void getEventID(Context context, EventIdCallback callback) {
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
         String BASE_URL = "http://192.168.10.28:3000/event";
+        int userId = ((MyApp) context.getApplicationContext()).getUserId();
+
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("user_id", 1); //
+            jsonBody.put("user_id", userId);
             jsonBody.put("event_date", getDate());
             jsonBody.put("start_time", getTime());
             jsonBody.put("description", getDescription());

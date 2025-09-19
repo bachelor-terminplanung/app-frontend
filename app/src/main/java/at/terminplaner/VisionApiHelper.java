@@ -123,9 +123,10 @@ public class VisionApiHelper {
     public static void sendEvent(CloudOCR cloudOCR, String description, String date, String time, int duration, boolean isRepeating, String repeatType, String repeatUntil) {
         try {
             URL url = new URL("http://192.168.10.28:3000/event");
+            int userId = ((MyApp) cloudOCR.getApplication()).getUserId();
 
             JSONObject json = new JSONObject();
-            json.put("user_id", 1);
+            json.put("user_id", userId);
             json.put("event_date", date);
             json.put("start_time", time);
             json.put("description", description);
@@ -184,6 +185,8 @@ public class VisionApiHelper {
                 Event event = new Event(detectedText,date, time, 0,false, "","");
                 cloudOCR.runOnUiThread(() -> EventPopUp.showDetailedPopup(cloudOCR, event, true, false, inputEvent -> {
                     // callback ?
+                    cloudOCR.checkAndHandleDuplicate(inputEvent);
+
                 }));
                 if (detectedText != null) {
                     callback.accept(detectedText);
@@ -197,3 +200,4 @@ public class VisionApiHelper {
         }).start();
     }
 }
+

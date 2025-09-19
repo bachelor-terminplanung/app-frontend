@@ -29,22 +29,22 @@
             android:exported="false" />
         <activity
             android:name=".Camera"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".CloudOCR"
             android:exported="false" />
         <activity
             android:name=".UpdateEvent"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".DeleteEvent"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".DetailedCalendar"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".SignUpActivity"
             android:exported="true" >
