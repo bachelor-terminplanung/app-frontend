@@ -49,7 +49,7 @@ public class DeleteEventFragment extends Fragment {
 
         if (event != null) {
             Log.d("EVENT", "event: " + event.toString());
-            event.getEventID(new EventIdCallback() {
+            event.getEventID(requireContext(), new EventIdCallback() {
                 @Override
                 public void onEventIdReceived(int eventId) {
                     requireActivity().runOnUiThread(() -> {

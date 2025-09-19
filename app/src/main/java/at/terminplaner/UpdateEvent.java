@@ -30,7 +30,7 @@ public class UpdateEvent extends AppCompatActivity {
         event = getIntent().getParcelableExtra("event");
 
         Log.d("EVENT", "event: " + event.toString());
-        event.getEventID(new EventIdCallback() {
+        event.getEventID(UpdateEvent.this, new EventIdCallback() {
             @Override
             public void onEventIdReceived(int eventId) {
                 runOnUiThread(() -> {
@@ -39,9 +39,9 @@ public class UpdateEvent extends AppCompatActivity {
                             @Override
                             public void onFailure(okhttp3.Call call, IOException e) {
                                 runOnUiThread(() -> {
-                                        Toast.makeText(UpdateEvent.this, "Update fehlgeschlagen", Toast.LENGTH_SHORT).show();
-                                        finish();
-                            });
+                                    Toast.makeText(UpdateEvent.this, "Update fehlgeschlagen", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                });
                             }
                             @Override
                             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {

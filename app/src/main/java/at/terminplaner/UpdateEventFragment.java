@@ -74,13 +74,13 @@ public class UpdateEventFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        event.getEventID(new EventIdCallback() {
+        event.getEventID(requireContext(), new EventIdCallback() {
             @Override
             public void onEventIdReceived(int eventId) {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         EventPopUp.showDetailedPopup(getActivity(), event, false, true, inputEvent -> {
-                            updateEvent(inputEvent, eventId, new Callback() {
+                            updateEvent(requireContext(), inputEvent, eventId, new Callback() {
                                 @Override
                                 public void onFailure(okhttp3.Call call, IOException e) {
                                     if (getActivity() != null) {
@@ -128,11 +128,13 @@ public class UpdateEventFragment extends Fragment {
         }
     }
 
-    public static void updateEvent(Event event, int eventId, Callback callback) {
+    public static void updateEvent(Context context, Event event, int eventId, Callback callback) {
         JSONObject jsonBody = new JSONObject();
         try {
+            int userId = ((MyApp) context.getApplicationContext()).getUserId();
             jsonBody.put("event_id", eventId);
-            jsonBody.put("user_id", 1);
+            jsonBody.put("user_id", userId);
+            Log.d("ID", "update klasse id = " + userId);
             jsonBody.put("event_date", event.getDate());
             jsonBody.put("start_time", event.getTime());
             jsonBody.put("description", event.getDescription());
