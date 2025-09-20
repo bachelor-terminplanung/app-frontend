@@ -9,94 +9,140 @@
         android:id="@+id/updateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="139dp"
+        android:layout_marginTop="98dp"
+        android:layout_marginEnd="140dp"
+        android:layout_marginBottom="10dp"
         android:text="Aktualisieren"
-        android:layout_marginTop="100dp"
         android:theme="@style/BlueButton"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="153dp"
-        tools:layout_editor_absoluteY="86dp" />
+        app:layout_constraintBottom_toTopOf="@+id/deleteButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
+        android:layout_marginStart="154dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="155dp"
+        android:layout_marginBottom="20dp"
         android:text="Löschen"
         android:theme="@style/BlueButton"
+        app:layout_constraintBottom_toTopOf="@+id/detailedViewDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/updateButton"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="153dp" />
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/detailedViewDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2000-08-08"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="134dp"
+        android:layout_marginBottom="10dp"
         android:hint="date yyyy-mm-dd"
+        android:text="2000-08-08"
+        app:layout_constraintBottom_toTopOf="@+id/detailedViewTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/deleteButton"
-        tools:layout_editor_absoluteX="101dp"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/detailedViewTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="00:00:00"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="116dp"
+        android:layout_marginBottom="10dp"
         android:hint="start time hh:mm:ss"
+        android:text="00:00:00"
+        app:layout_constraintBottom_toTopOf="@+id/detailedViewDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailedViewDate"
-        tools:layout_editor_absoluteX="101dp"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/detailedViewDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="0"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="171dp"
+        android:layout_marginBottom="10dp"
         android:hint="description"
-        app:layout_constraintTop_toBottomOf="@+id/detailedViewTime"
-        tools:layout_editor_absoluteX="101dp" />
+        android:text="0"
+        app:layout_constraintBottom_toTopOf="@+id/detailedViewDuration"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailedViewTime" />
 
     <TextView
         android:id="@+id/detailedViewDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="00:00:00"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="125dp"
+        android:layout_marginBottom="10dp"
         android:hint="duration hh:mm:ss"
-        app:layout_constraintTop_toBottomOf="@+id/detailedViewDescription"
-        tools:layout_editor_absoluteX="101dp" />
+        android:text="00:00:00"
+        app:layout_constraintBottom_toTopOf="@+id/detailedViewIsRepeating"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailedViewDescription" />
 
     <TextView
         android:id="@+id/detailedViewIsRepeating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="0"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="182dp"
+        android:layout_marginBottom="10dp"
         android:hint="repetable"
-        app:layout_constraintTop_toBottomOf="@+id/detailedViewDuration"
-        tools:layout_editor_absoluteX="101dp" />
+        android:text="0"
+        app:layout_constraintBottom_toTopOf="@+id/detailedViewRepeatType"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailedViewDuration" />
 
     <TextView
         android:id="@+id/detailedViewRepeatType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="Täglich"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="170dp"
+        android:layout_marginBottom="10dp"
         android:hint="repeat type"
-        app:layout_constraintTop_toBottomOf="@+id/detailedViewIsRepeating"
-        tools:layout_editor_absoluteX="101dp" />
+        android:text="Täglich"
+        app:layout_constraintBottom_toTopOf="@+id/detailedViewRepeatUntil"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailedViewIsRepeating" />
 
     <TextView
         android:id="@+id/detailedViewRepeatUntil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text=""
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="171dp"
+        android:layout_marginBottom="99dp"
         android:hint="repeat until"
-        app:layout_constraintTop_toBottomOf="@+id/detailedViewRepeatType"
-        tools:layout_editor_absoluteX="101dp" />
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailedViewRepeatType" />
 
     <FrameLayout
         android:id="@+id/loadingOverlay"

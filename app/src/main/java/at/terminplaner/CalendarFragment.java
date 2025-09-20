@@ -1,16 +1,25 @@
 package at.terminplaner;
 
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.DateFormatSymbols;
+import java.util.HashMap;
+import java.util.Properties;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +42,14 @@ public class CalendarFragment extends Fragment {
     public CalendarFragment() {
         // Required empty public constructor
     }
+
+    private GridView gridView;
+    private TextView monthYearText;
+    private Button prevMonth;
+    private Button nextMonth;
+    private Button logoutButton;
+    private int year;
+    private int month;
 
     /**
      * Use this factory method to create a new instance of
@@ -62,6 +79,7 @@ public class CalendarFragment extends Fragment {
 
         ocrButton = view.findViewById(R.id.addEvent);
         detailButton = view.findViewById(R.id.detailButton);
+        logoutButton = view.findViewById(R.id.logoutButton);
 
         ocrButton.setOnClickListener(v -> {
             int userId = ((MyApp) requireActivity().getApplication()).getUserId();
@@ -78,12 +96,68 @@ public class CalendarFragment extends Fragment {
             startActivity(intent);
         });
 
+        logoutButton.setOnClickListener(view1 -> {
+            NavHostFragment.findNavController(CalendarFragment.this)
+                    .navigate(R.id.action_calendarFragment_to_loginFragment);
+        });
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendar, container, false);
+        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+
+        gridView = view.findViewById(R.id.gridView);
+        monthYearText = view.findViewById(R.id.monthYearText);
+        prevMonth = view.findViewById(R.id.prevMonth);
+        nextMonth = view.findViewById(R.id.nextMonth);
+
+        Calendar today = Calendar.getInstance();
+        year = today.get(Calendar.YEAR);
+        month = today.get(Calendar.MONTH);
+
+        updateCalendar();
+
+        prevMonth.setOnClickListener(v -> {
+            month--;
+            if (month < 0) {
+                month = 11;
+                year--;
+            }
+            updateCalendar();
+        });
+
+        nextMonth.setOnClickListener(v -> {
+            month++;
+            if (month > 11) {
+                month = 0;
+                year++;
+            }
+            updateCalendar();
+        });
+
+        return view;
+    }
+
+    private void updateCalendar() {
+        CustomCalendarAdapter adapter = new CustomCalendarAdapter(requireContext(), year, month, -1);
+        gridView.setAdapter(adapter);
+
+        String monthName = new DateFormatSymbols().getMonths()[month];
+        monthYearText.setText(monthName + " " + year);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+        HashMap<Object, Properties> descHashMap = new HashMap<>();
+        Properties usedProperty = new Properties();
+        RecyclerView.LayoutManager.Properties used = new RecyclerView.LayoutManager.Properties();
+
     }
 }
