@@ -44,7 +44,7 @@ public class SignUpFragment extends Fragment {
     private String mParam2;
 
     private FragmentSignUpBinding fragmentSignUpBinding;
-    private static final String BASE_URL = "http://192.168.10.28:3000/register";
+    private static final String BASE_URL = "http://10.0.2.2:3000/register";
     private static final OkHttpClient client = new OkHttpClient();
 
     public SignUpFragment() {

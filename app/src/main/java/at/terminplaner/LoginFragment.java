@@ -38,7 +38,7 @@ public class LoginFragment extends Fragment {
     private String mParam2;
 
     private FragmentLoginBinding fragmentLoginBinding;
-    private static final String BASE_URL = "http://192.168.10.28:3000/login";
+    private static final String BASE_URL = "http://10.0.2.2:3000/login";
     private static final OkHttpClient client = new OkHttpClient();
 
     public LoginFragment() {

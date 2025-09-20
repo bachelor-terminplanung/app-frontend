@@ -20,7 +20,7 @@ public class User {
     private static final OkHttpClient client = new OkHttpClient();
 
     public static void fetchUserId(Fragment fragment, String username, Runnable onSuccess) {
-        String url = "http://192.168.10.28:3000/user/id/" + username;
+        String url = "http://10.0.2.2:3000/user/id/" + username;
 
         Request request = new Request.Builder()
                 .url(url)

@@ -105,7 +105,7 @@ public class Event implements Parcelable {
     public void getEventID(Context context, EventIdCallback callback) {
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
-        String BASE_URL = "http://192.168.10.28:3000/event";
+        String BASE_URL = "http://10.0.2.2:3000/event";
         int userId = ((MyApp) context.getApplicationContext()).getUserId();
 
         JSONObject jsonBody = new JSONObject();
