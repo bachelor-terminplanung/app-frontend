@@ -79,7 +79,7 @@ public class CloudOCR extends AppCompatActivity {
         }
     }
 
-    private void checkAndHandleDuplicate(Event inputEvent) {
+    void checkAndHandleDuplicate(Event inputEvent) {
 
         DuplicateEventChecker.checkDuplicateEvent(this, inputEvent.date, inputEvent.time, inputEvent.description, new DuplicateEventChecker.DuplicateCallback() {
             @Override
