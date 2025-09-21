@@ -30,6 +30,10 @@
             android:id="@+id/action_calendarFragment_to_loginFragment"
             app:destination="@+id/loginFragment" />
 
+        <action
+            android:id="@+id/action_calendarFragment_to_calendarDayViewFragment"
+            app:destination="@id/calendarDayViewFragment"/>
+
     </fragment>
 
     <fragment
@@ -45,6 +49,16 @@
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/calendarDayViewFragment"
+        android:name="at.terminplaner.CalendarDayViewFragment"
+        tools:layout="@layout/fragment_calendar_day_view">
+
+        <action
+            android:id="@+id/action_calendarDayViewFragment_to_calendarFragment"
+            app:destination="@+id/calendarFragment" />
     </fragment>
 
 </navigation>

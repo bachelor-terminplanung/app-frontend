@@ -2,6 +2,7 @@ package at.terminplaner;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,24 +10,23 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentManager;
+
 import java.util.Calendar;
 
 public class CustomCalendarAdapter extends BaseAdapter {
 
     private Context context;
-    private int year;
-    private int month;
-    private int desiredDay;
+    private int year, month, desiredDay;
+    private int todayYear, todayMonth, todayDay;
+    private FragmentManager fragmentManager;
 
-    private int todayYear;
-    private int todayMonth;
-    private int todayDay;
-
-    public CustomCalendarAdapter(Context context, int year, int month, int desiredDay) {
+    public CustomCalendarAdapter(Context context, int year, int month, int desiredDay, FragmentManager fm) {
         this.context = context;
         this.year = year;
         this.month = month;
         this.desiredDay = desiredDay;
+        this.fragmentManager = fm;
 
         Calendar today = Calendar.getInstance();
         todayYear = today.get(Calendar.YEAR);
@@ -36,18 +36,18 @@ public class CustomCalendarAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return getNumberOfDaysInMonth(year, month);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, 1);
+        int firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        int offset = (firstDayOfWeek + 5) % 7; // Montag=0
+        return getNumberOfDaysInMonth(year, month) + offset;
     }
 
     @Override
-    public Object getItem(int position) {
-        return position + 1;
-    }
+    public Object getItem(int position) { return position; }
 
     @Override
-    public long getItemId(int position) {
-        return position + 1;
-    }
+    public long getItemId(int position) { return position; }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -55,32 +55,47 @@ public class CustomCalendarAdapter extends BaseAdapter {
 
         if (convertView == null) {
             dayView = new TextView(context);
-            dayView.setLayoutParams(new GridView.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, 150
-            ));
+            dayView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150));
             dayView.setGravity(Gravity.CENTER);
             dayView.setPadding(8, 8, 8, 8);
         } else {
             dayView = (TextView) convertView;
         }
 
-        int dayNumber = position + 1;
-        dayView.setText(String.valueOf(dayNumber));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, 1);
+        int firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        int offset = (firstDayOfWeek + 5) % 7;
 
-        // Hintergrund standardmäßig weiß
-        dayView.setBackgroundColor(Color.WHITE);
-        dayView.setTextColor(Color.DKGRAY);
+        int dayNumber = position - offset + 1;
 
-        // Heute hervorheben
-        if (year == todayYear && month == todayMonth && dayNumber == todayDay) {
-            dayView.setBackgroundColor(Color.parseColor("#2196F3"));
-            dayView.setTextColor(Color.BLACK);
-        }
+        if (dayNumber <= 0 || dayNumber > getNumberOfDaysInMonth(year, month)) {
+            dayView.setText("");
+            dayView.setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            dayView.setText(String.valueOf(dayNumber));
+            dayView.setBackgroundColor(Color.WHITE);
+            dayView.setTextColor(Color.DKGRAY);
 
-        // Optional: desiredDay hervorheben
-        if (desiredDay > 0 && dayNumber == desiredDay) {
-            dayView.setBackgroundColor(Color.parseColor("#BF9A8E")); // spezielle Farbe
-            dayView.setTextColor(Color.WHITE);
+            if (year == todayYear && month == todayMonth && dayNumber == todayDay) {
+                dayView.setBackgroundResource(R.drawable.circle_today);
+                dayView.setTextColor(Color.BLACK);
+            }
+
+            if (desiredDay > 0 && dayNumber == desiredDay) {
+                dayView.setBackgroundColor(Color.parseColor("#BF9A8E"));
+                dayView.setTextColor(Color.WHITE);
+            }
+
+            dayView.setOnClickListener(v -> {
+                Bundle args = new Bundle();
+                args.putInt("year", year);
+                args.putInt("month", month);
+                args.putInt("day", dayNumber);
+
+                androidx.navigation.NavController navController = androidx.navigation.Navigation.findNavController(v);
+                navController.navigate(R.id.action_calendarFragment_to_calendarDayViewFragment, args);
+            });
         }
 
         return dayView;

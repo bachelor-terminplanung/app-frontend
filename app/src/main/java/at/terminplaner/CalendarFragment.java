@@ -141,8 +141,10 @@ public class CalendarFragment extends Fragment {
     }
 
     private void updateCalendar() {
-        CustomCalendarAdapter adapter = new CustomCalendarAdapter(requireContext(), year, month, -1);
+        CustomCalendarAdapter adapter = new CustomCalendarAdapter(requireContext(), year, month, -1, getParentFragmentManager()
+        );
         gridView.setAdapter(adapter);
+
 
         String monthName = new DateFormatSymbols().getMonths()[month];
         monthYearText.setText(monthName + " " + year);
