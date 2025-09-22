@@ -90,7 +90,6 @@ public class CalendarFragment extends Fragment {
         }
 
         ocrButton = view.findViewById(R.id.addEvent);
-        detailButton = view.findViewById(R.id.detailButton);
         logoutButton = view.findViewById(R.id.logoutButton);
 
         ocrButton.setOnClickListener(v -> {
@@ -102,10 +101,6 @@ public class CalendarFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), CloudOCR.class);
                 startActivity(intent);
             }
-        });
-        detailButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), DetailedCalendar.class);
-            startActivity(intent);
         });
 
         logoutButton.setOnClickListener(view1 -> {
