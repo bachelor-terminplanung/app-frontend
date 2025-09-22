@@ -3,161 +3,277 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <Button
-        android:id="@+id/updateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="139dp"
-        android:layout_marginTop="98dp"
-        android:layout_marginEnd="140dp"
-        android:layout_marginBottom="10dp"
-        android:text="Aktualisieren"
-        android:theme="@style/BlueButton"
-        app:layout_constraintBottom_toTopOf="@+id/deleteButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#DCE4F8"
+    >
+    <androidx.cardview.widget.CardView
+        android:id="@+id/detailsCard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="6dp"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/deleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="154dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="155dp"
-        android:layout_marginBottom="20dp"
-        android:text="Löschen"
-        android:theme="@style/BlueButton"
-        app:layout_constraintBottom_toTopOf="@+id/detailedViewDate"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/updateButton"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <TextView
-        android:id="@+id/detailedViewDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="134dp"
-        android:layout_marginBottom="10dp"
-        android:hint="date yyyy-mm-dd"
-        android:text="2000-08-08"
-        app:layout_constraintBottom_toTopOf="@+id/detailedViewTime"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deleteButton"
-        tools:ignore="MissingConstraints" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-    <TextView
-        android:id="@+id/detailedViewTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="116dp"
-        android:layout_marginBottom="10dp"
-        android:hint="start time hh:mm:ss"
-        android:text="00:00:00"
-        app:layout_constraintBottom_toTopOf="@+id/detailedViewDescription"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailedViewDate"
-        tools:ignore="MissingConstraints" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Detaillierte Terminansicht"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginTop="30dp"
+                android:paddingBottom="16dp"
+                android:textColor="#222222"/>
 
-    <TextView
-        android:id="@+id/detailedViewDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="171dp"
-        android:layout_marginBottom="10dp"
-        android:hint="description"
-        android:text="0"
-        app:layout_constraintBottom_toTopOf="@+id/detailedViewDuration"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailedViewTime" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/detailedViewDuration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="125dp"
-        android:layout_marginBottom="10dp"
-        android:hint="duration hh:mm:ss"
-        android:text="00:00:00"
-        app:layout_constraintBottom_toTopOf="@+id/detailedViewIsRepeating"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailedViewDescription" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/detailedViewIsRepeating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="182dp"
-        android:layout_marginBottom="10dp"
-        android:hint="repetable"
-        android:text="0"
-        app:layout_constraintBottom_toTopOf="@+id/detailedViewRepeatType"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailedViewDuration" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp">
 
-    <TextView
-        android:id="@+id/detailedViewRepeatType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="170dp"
-        android:layout_marginBottom="10dp"
-        android:hint="repeat type"
-        android:text="Täglich"
-        app:layout_constraintBottom_toTopOf="@+id/detailedViewRepeatUntil"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailedViewIsRepeating" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginTop="10dp"
+                            android:text="📅 Datum:"
+                            android:textSize="16sp"
+                            android:textColor="#222222"/>
 
-    <TextView
-        android:id="@+id/detailedViewRepeatUntil"
-        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/detailedViewDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2000-08-08"
+                            android:layout_marginTop="10dp"
+                            android:textSize="16sp"
+                            android:textColor="#222222"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="⏰ Startzeit:"
+                            android:layout_marginTop="10dp"
+                            android:textSize="16sp"
+                            android:textColor="#222222"/>
+
+                        <TextView
+                            android:id="@+id/detailedViewTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00:00:00"
+                            android:layout_marginTop="10dp"
+                            android:textSize="16sp"
+                            android:textColor="#222222"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginTop="10dp"
+                            android:text="📝 Beschreibung:"
+                            android:textSize="16sp"
+                            android:textColor="#222222"/>
+
+                        <TextView
+                            android:id="@+id/detailedViewDescription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:layout_marginTop="10dp"
+                            android:textSize="16sp"
+                            android:textColor="#222222"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:text="⏳ Dauer:"
+                            android:textSize="16sp"
+                            android:textColor="#222222"/>
+
+                        <TextView
+                            android:id="@+id/detailedViewDuration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="00:00:00"
+                            android:textSize="16sp"
+                            android:textColor="#222222"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="🔁 Wiederholung:"
+                            android:layout_marginTop="10dp"
+                            android:textSize="16sp"
+                            android:textColor="#222222"/>
+
+                        <TextView
+                            android:id="@+id/detailedViewIsRepeating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Ja"
+                            android:textSize="16sp"
+                            android:textColor="#222222"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginTop="10dp"
+                            android:text="🔄 Typ:"
+                            android:textSize="16sp"
+                            android:textColor="#222222"/>
+
+                        <TextView
+                            android:id="@+id/detailedViewRepeatType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Täglich"
+                            android:layout_marginTop="10dp"
+                            android:textSize="16sp"
+                            android:textColor="#222222"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="📆 Wiederholen bis:"
+                            android:layout_marginTop="10dp"
+                            android:textSize="16sp"
+                            android:textColor="#222222"/>
+
+                        <TextView
+                            android:id="@+id/detailedViewRepeatUntil"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="2000-09-09"
+                            android:textSize="16sp"
+                            android:textColor="#222222"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="171dp"
-        android:layout_marginBottom="99dp"
-        android:hint="repeat until"
-        android:text=""
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_margin="25dp"
+        android:layout_marginBottom="35dp"
+        app:layout_constraintTop_toBottomOf="@+id/detailsCard"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailedViewRepeatType" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/updateButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:text="Aktualisieren"
+            android:backgroundTint="#4285F4"
+            android:textColor="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:text="Löschen"
+            android:backgroundTint="#EA4335"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/loadingOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#AA000000"
-        android:visibility="gone"
-        android:gravity="center">
+        android:gravity="center"
+        android:visibility="gone">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</FrameLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

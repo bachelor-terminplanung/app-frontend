@@ -1,10 +1,10 @@
 package at.terminplaner;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewbinding.ViewBinding;
 
@@ -14,10 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.Objects;
 
 import at.terminplaner.databinding.FragmentSignUpBinding;
 import okhttp3.Call;
@@ -25,6 +22,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -146,6 +144,27 @@ public class SignUpFragment extends Fragment {
 
         testExistingUser("anna_a");
 
+        fragmentSignUpBinding.viewColorPicker.setOnClickListener(v -> {
+            int initialColor = Color.parseColor("#FFA500"); //Startfarbe
+            AmbilWarnaDialog colorPicker = new AmbilWarnaDialog(
+                    getContext(),
+                    initialColor,
+                    new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                        @Override
+                        public void onOk(AmbilWarnaDialog dialog, int color) {
+                            fragmentSignUpBinding.viewColorPicker.setBackgroundColor(color);
+                            String hexColor = String.format("#%06X", (0xFFFFFF & color));
+                            fragmentSignUpBinding.viewColorPicker.setTag(hexColor);
+                        }
+
+                        @Override
+                        public void onCancel(AmbilWarnaDialog dialog) {
+
+                        }
+                    });
+            colorPicker.show();
+        });
+
         fragmentSignUpBinding.buttonSignUp.setOnClickListener(v -> {
             String fullname = fragmentSignUpBinding.editTextFullName.getText().toString().trim();
             String[] parts = fullname.split(" ", 2);
@@ -156,7 +175,10 @@ public class SignUpFragment extends Fragment {
             String address = fragmentSignUpBinding.editTextEmail.getText().toString().trim();
             String password = fragmentSignUpBinding.editTextPassword.getText().toString();
             String confirmPassword = fragmentSignUpBinding.editTextConfirmPassword.getText().toString();
-            String color = "orange"; // Default-Farbe, kann angepasst werden
+            String color = (String) fragmentSignUpBinding.viewColorPicker.getTag();
+            if (color == null) {
+                color = "#2196F3";
+            }
 
             if (!password.equals(confirmPassword)) {
                 Toast.makeText(getContext(), "Passwörter stimmen nicht überein", Toast.LENGTH_SHORT).show();
