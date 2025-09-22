@@ -124,9 +124,13 @@ public class CalendarDayViewFragment extends Fragment {
     }
 
     private void addEventToSlot(Event event, String userColor) {
-        String eventTime = event.getTime().substring(0,5); // nur HH:mm
-        LinearLayout slotContainer = slotMap.get(eventTime);
+        // Event-Zeit HH:mm
+        String[] timeParts = event.getTime().split(":");
+        int hour = Integer.parseInt(timeParts[0]);
+        // Alle Minuten zwischen 0–59 fallen in die volle Stunde
+        String slotKey = String.format(Locale.getDefault(), "%02d:00", hour);
 
+        LinearLayout slotContainer = slotMap.get(slotKey);
         if (slotContainer == null) {
             slotContainer = binding.dayEventsContainer;
         }
@@ -170,6 +174,7 @@ public class CalendarDayViewFragment extends Fragment {
     }
 
     private void loadEventsForDay(String date) {
+        OkHttpClient client = new OkHttpClient();
         String url = "http://10.0.2.2:3000/event/date";
 
         JSONObject jsonBody = new JSONObject();
@@ -203,45 +208,101 @@ public class CalendarDayViewFragment extends Fragment {
                 }
 
                 String responseBody = response.body().string();
+                Log.d("LOAD_EVENTS", "Response: " + responseBody);
+
                 try {
                     JSONArray eventsArray = new JSONArray(responseBody);
+
+                    Calendar selectedDay = Calendar.getInstance();
+                    String[] dateParts = date.split("-");
+                    selectedDay.set(Integer.parseInt(dateParts[0]),
+                            Integer.parseInt(dateParts[1]) - 1,
+                            Integer.parseInt(dateParts[2]));
 
                     for (int i = 0; i < eventsArray.length(); i++) {
                         JSONObject obj = eventsArray.getJSONObject(i);
 
-                        String description = obj.getString("description");
-                        String time = obj.getString("start_time");
-                        int userId = obj.getInt("user_id");
+                        String eventDate = obj.optString("event_date", null);
+                        String startTime = obj.optString("start_time", "00:00");
+                        String descriptionText = obj.optString("description", "");
+                        int userId = obj.optInt("user_id", -1);
+                        boolean isRepeating = obj.optInt("is_repeating", 0) != 0;
+                        String repeatType = obj.optString("repeat_type", null);
+                        String repeatUntil = obj.optString("repeat_until", null);
 
-                        Event event = new Event(
-                                description,
-                                obj.getString("event_date"),
-                                time,
-                                0, // Dauer ignorieren, falls als String
-                                obj.optInt("is_repeating",0) != 0,
-                                obj.optString("repeat_type", null),
-                                obj.optString("repeat_until", null)
-                        );
+                        // Prüfen, ob Event auf diesen Tag fällt
+                        boolean shouldShow = false;
 
-                        // Farbe vom User holen
-                        User.getColorById(userId, new User.ColorCallback() {
-                            @Override
-                            public void onColorReceived(String color) {
-                                requireActivity().runOnUiThread(() ->
-                                        addEventToSlot(event, color)
-                                );
+                        if (!isRepeating) {
+                            shouldShow = date.equals(eventDate);
+                        } else {
+                            Calendar eventDay = Calendar.getInstance();
+                            if (eventDate != null && !eventDate.equals("null")) {
+                                String[] parts = eventDate.split("-");
+                                eventDay.set(Integer.parseInt(parts[0]),
+                                        Integer.parseInt(parts[1]) - 1,
+                                        Integer.parseInt(parts[2]));
                             }
 
-                            @Override
-                            public void onError(String error) {
-                                requireActivity().runOnUiThread(() ->
-                                        addEventToSlot(event, "#2196F3") // Standardfarbe
-                                );
+                            Calendar repeatUntilCal = null;
+                            if (repeatUntil != null && !repeatUntil.equals("null") && !repeatUntil.equals("0000-00-00")) {
+                                String[] parts = repeatUntil.split("-");
+                                repeatUntilCal = Calendar.getInstance();
+                                repeatUntilCal.set(Integer.parseInt(parts[0]),
+                                        Integer.parseInt(parts[1]) - 1,
+                                        Integer.parseInt(parts[2]));
                             }
-                        });
+
+                            switch (repeatType != null ? repeatType.toLowerCase(Locale.ROOT) : "") {
+                                case "täglich":
+                                    shouldShow = !selectedDay.before(eventDay)
+                                            && (repeatUntilCal == null || !selectedDay.after(repeatUntilCal));
+                                    break;
+                                case "wöchentlich":
+                                    shouldShow = !selectedDay.before(eventDay)
+                                            && selectedDay.get(Calendar.DAY_OF_WEEK) == eventDay.get(Calendar.DAY_OF_WEEK)
+                                            && (repeatUntilCal == null || !selectedDay.after(repeatUntilCal));
+                                    break;
+                                case "monatlich":
+                                    shouldShow = !selectedDay.before(eventDay)
+                                            && selectedDay.get(Calendar.DAY_OF_MONTH) == eventDay.get(Calendar.DAY_OF_MONTH)
+                                            && (repeatUntilCal == null || !selectedDay.after(repeatUntilCal));
+                                    break;
+                                case "jährlich":
+                                    shouldShow = !selectedDay.before(eventDay)
+                                            && selectedDay.get(Calendar.DAY_OF_MONTH) == eventDay.get(Calendar.DAY_OF_MONTH)
+                                            && selectedDay.get(Calendar.MONTH) == eventDay.get(Calendar.MONTH)
+                                            && (repeatUntilCal == null || !selectedDay.after(repeatUntilCal));
+                                    break;
+                                default:
+                                    shouldShow = date.equals(eventDate);
+                            }
+                        }
+
+                        if (!shouldShow) continue;
+
+                        Event event = new Event(descriptionText, eventDate, startTime,
+                                0, isRepeating, repeatType, repeatUntil);
+
+                        // User-Farbe laden
+                        if (userId != -1) {
+                            User.getColorById(userId, new User.ColorCallback() {
+                                @Override
+                                public void onColorReceived(String color) {
+                                    requireActivity().runOnUiThread(() -> addEventToSlot(event, color));
+                                }
+
+                                @Override
+                                public void onError(String message) {
+                                    requireActivity().runOnUiThread(() -> addEventToSlot(event, "#2196F3"));
+                                }
+                            });
+                        } else {
+                            requireActivity().runOnUiThread(() -> addEventToSlot(event, "#2196F3"));
+                        }
                     }
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
