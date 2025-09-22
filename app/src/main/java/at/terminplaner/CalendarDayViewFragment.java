@@ -83,14 +83,14 @@ public class CalendarDayViewFragment extends Fragment {
                 requireActivity().getSupportFragmentManager().popBackStack()
         );
 
-        // Datum anzeigen
+        //Datum anzeigen
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
         String dayName = new SimpleDateFormat("EEEE", Locale.GERMAN).format(calendar.getTime());
         String dateString = String.format(Locale.getDefault(), "%02d.%02d.%04d", day, month + 1, year);
         binding.dayHeaderTextView.setText(dayName + ", " + dateString);
 
-        // Uhrzeit-Slots erstellen
+        //Uhrzeit-Slots
         String[] hours = {"06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00"};
         LinearLayout timeSlotsLayout = binding.timeSlotsLayout;
 
@@ -125,17 +125,7 @@ public class CalendarDayViewFragment extends Fragment {
     }
 
     private void addEventToSlot(Event event, String userColor) {
-        // Event-Zeit HH:mm
-        String[] timeParts = event.getTime().split(":");
-        int hour = Integer.parseInt(timeParts[0]);
-        String slotKey = String.format(Locale.getDefault(), "%02d:00", hour);
-
-        LinearLayout slotContainer = slotMap.get(slotKey);
-        if (slotContainer == null) {
-            slotContainer = binding.dayEventsContainer;
-        }
-
-        // Event horizontal layout
+        //Event horizontal layout
         LinearLayout eventLayout = new LinearLayout(requireContext());
         eventLayout.setOrientation(LinearLayout.HORIZONTAL);
         eventLayout.setGravity(Gravity.CENTER_VERTICAL);
@@ -146,9 +136,9 @@ public class CalendarDayViewFragment extends Fragment {
         eventLayoutParams.setMargins(0, 4, 0, 4);
         eventLayout.setLayoutParams(eventLayoutParams);
 
-        // Farbkreis
+        //Farbkreis
         View circle = new View(requireContext());
-        int sizeInPx = (int) (16 * getResources().getDisplayMetrics().density);
+        int sizeInPx = (int) (16 * getResources().getDisplayMetrics().density); // 16dp
         LinearLayout.LayoutParams circleParams = new LinearLayout.LayoutParams(sizeInPx, sizeInPx);
         circleParams.setMargins(0, 0, 8, 0);
         circle.setLayoutParams(circleParams);
@@ -159,23 +149,25 @@ public class CalendarDayViewFragment extends Fragment {
             circle.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
         }
 
-        // Beschreibung
+        //Beschreibung
         TextView description = new TextView(requireContext());
         description.setText(event.getDescription());
         description.setTextSize(16f);
         description.setTextColor(Color.BLACK);
 
-        // Event zusammensetzen
+        //Event zusammensetzen
         eventLayout.addView(circle);
         eventLayout.addView(description);
 
-        // Klicklistener für Detailansicht
+        //Detailansicht öffnen
         eventLayout.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), DetailedCalendar.class);
+            Intent intent = new Intent(getActivity(), DetailedCalendar.class);
             intent.putExtra("event", event);
             startActivity(intent);
         });
 
+        String slotKey = event.getTime().split(":")[0] + ":00"; //volle Stunde
+        LinearLayout slotContainer = slotMap.getOrDefault(slotKey, binding.dayEventsContainer);
         slotContainer.addView(eventLayout);
     }
 
