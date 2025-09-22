@@ -1,5 +1,7 @@
 package at.terminplaner;
 
+import static android.view.View.GONE;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +22,7 @@ public class CloudOCR extends AppCompatActivity {
 
     private static final int SELECT_IMAGE = 1;
     private static final int CAMERA_PIC_REQUEST = 2500;
+    private TextView imagePlaceholderText;
     private ImageView imageView;
     private TextView resultText;
     private String apiKey = "";
@@ -31,6 +34,7 @@ public class CloudOCR extends AppCompatActivity {
         setContentView(R.layout.activity_cloudocr);
         imageView = findViewById(R.id.imageView);
         resultText = findViewById(R.id.resultText);
+        imagePlaceholderText = findViewById(R.id.imagePlaceholderText);
 
         Button selectImage = findViewById(R.id.selectImage);
         selectImage.setOnClickListener(v -> {
@@ -56,6 +60,7 @@ public class CloudOCR extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent image) {
         super.onActivityResult(requestCode, resultCode, image);
+        imagePlaceholderText.setVisibility(GONE);
 
         if (requestCode == SELECT_IMAGE && resultCode == RESULT_OK && image != null) {
             Uri imageUri = image.getData();
