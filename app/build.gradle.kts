@@ -69,4 +69,7 @@ dependencies {
 
     implementation ("androidx.navigation:navigation-fragment:$nav_version")
     implementation ("androidx.navigation:navigation-ui:$nav_version")
+
+    //colorpicker
+    implementation ("com.github.yukuku:ambilwarna:2.0.1")
 }
