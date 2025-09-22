@@ -122,7 +122,7 @@ public class VisionApiHelper {
 
     public static void sendEvent(CloudOCR cloudOCR, String description, String date, String time, int duration, boolean isRepeating, String repeatType, String repeatUntil) {
         try {
-            URL url = new URL("10.0.2.2:3000/event");
+            URL url = new URL("http://10.0.2.2:3000/event");
             int userId = ((MyApp) cloudOCR.getApplication()).getUserId();
 
             JSONObject json = new JSONObject();
