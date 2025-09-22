@@ -17,9 +17,21 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -141,14 +153,67 @@ public class CalendarFragment extends Fragment {
     }
 
     private void updateCalendar() {
-        CustomCalendarAdapter adapter = new CustomCalendarAdapter(requireContext(), year, month, -1, getParentFragmentManager()
-        );
-        gridView.setAdapter(adapter);
+        // Datum für den Monatsbereich
+        String start = year + "-" + String.format("%02d", month + 1) + "-01";
+        String end = year + "-" + String.format("%02d", month + 1) + "-" + getLastDayOfMonth(year, month);
 
+        OkHttpClient client = new OkHttpClient();
+        MediaType JSON = MediaType.get("application/json; charset=utf-8");
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("start", start);
+            jsonBody.put("end", end);
+        } catch (JSONException e) { e.printStackTrace(); }
 
+        RequestBody body = RequestBody.create(jsonBody.toString(), JSON);
+        Request request = new Request.Builder()
+                .url("http://10.0.2.2:3000/event/range")
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                String responseBody = response.body().string();
+                try {
+                    JSONArray events = new JSONArray(responseBody);
+                    Set<Integer> daysWithEvents = new HashSet<>();
+                    for (int i = 0; i < events.length(); i++) {
+                        JSONObject obj = events.getJSONObject(i);
+                        String date = obj.getString("event_date"); // z.B. "2025-09-22"
+                        int day = Integer.parseInt(date.split("-")[2]);
+                        daysWithEvents.add(day);
+                    }
+
+                    // Adapter auf UI-Thread aktualisieren
+                    requireActivity().runOnUiThread(() -> {
+                        CustomCalendarAdapter adapter = new CustomCalendarAdapter(requireContext(), year, month, -1, getParentFragmentManager());
+                        adapter.setDaysWithEvents(daysWithEvents);
+                        gridView.setAdapter(adapter);
+                    });
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        // Monat-Jahr-Text
         String monthName = new DateFormatSymbols().getMonths()[month];
         monthYearText.setText(monthName + " " + year);
     }
+
+    private int getLastDayOfMonth(int year, int month) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month, 1);
+        return cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
