@@ -15,7 +15,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 public class DuplicateEventChecker {
-    private static final String BASE_URL = "http://192.168.10.28:3000/event";
+    private static final String BASE_URL = "http://10.0.2.2:3000/event";
     private static final OkHttpClient client = new OkHttpClient();
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 

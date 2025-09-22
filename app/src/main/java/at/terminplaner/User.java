@@ -1,6 +1,5 @@
 package at.terminplaner;
 
-import android.app.Application;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,7 +19,7 @@ public class User {
     private static final OkHttpClient client = new OkHttpClient();
 
     public static void fetchUserId(Fragment fragment, String username, Runnable onSuccess) {
-        String url = "http://192.168.10.28:3000/user/id/" + username;
+        String url = "http://10.0.2.2:3000/user/id/" + username;
 
         Request request = new Request.Builder()
                 .url(url)
@@ -55,6 +54,44 @@ public class User {
                     fragment.requireActivity().runOnUiThread(() ->
                             Toast.makeText(fragment.getContext(), "Serverfehler: " + responseBody, Toast.LENGTH_LONG).show()
                     );
+                }
+            }
+        });
+    }
+
+    public interface ColorCallback {
+        void onColorReceived(String color);
+        void onError(String errorMessage);
+    }
+
+    public static void getColorById(int userId, ColorCallback callback) {
+        String url = "http://10.0.2.2:3000/user/color/" + userId;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                callback.onError(e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    callback.onError("Serverfehler: " + response.code());
+                    return;
+                }
+
+                String body = response.body().string();
+                try {
+                    JSONObject json = new JSONObject(body);
+                    String color = json.getString("color");
+                    callback.onColorReceived(color);
+                } catch (Exception e) {
+                    callback.onError("JSON Fehler: " + e.getMessage());
                 }
             }
         });
