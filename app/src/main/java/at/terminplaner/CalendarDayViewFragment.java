@@ -1,5 +1,6 @@
 package at.terminplaner;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -127,7 +128,6 @@ public class CalendarDayViewFragment extends Fragment {
         // Event-Zeit HH:mm
         String[] timeParts = event.getTime().split(":");
         int hour = Integer.parseInt(timeParts[0]);
-        // Alle Minuten zwischen 0–59 fallen in die volle Stunde
         String slotKey = String.format(Locale.getDefault(), "%02d:00", hour);
 
         LinearLayout slotContainer = slotMap.get(slotKey);
@@ -148,7 +148,7 @@ public class CalendarDayViewFragment extends Fragment {
 
         // Farbkreis
         View circle = new View(requireContext());
-        int sizeInPx = (int) (16 * getResources().getDisplayMetrics().density); // 16dp
+        int sizeInPx = (int) (16 * getResources().getDisplayMetrics().density);
         LinearLayout.LayoutParams circleParams = new LinearLayout.LayoutParams(sizeInPx, sizeInPx);
         circleParams.setMargins(0, 0, 8, 0);
         circle.setLayoutParams(circleParams);
@@ -169,7 +169,13 @@ public class CalendarDayViewFragment extends Fragment {
         eventLayout.addView(circle);
         eventLayout.addView(description);
 
-        // In Slot einfügen
+        // Klicklistener für Detailansicht
+        eventLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), DetailedCalendar.class);
+            intent.putExtra("event", event);
+            startActivity(intent);
+        });
+
         slotContainer.addView(eventLayout);
     }
 
