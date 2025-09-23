@@ -17,10 +17,8 @@ public class DetailedCalendar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_calendar_view);
 
-        // Event aus Intent laden
         event = getIntent().getParcelableExtra("event");
 
-        // Views
         Button deleteButton = findViewById(R.id.deleteButton);
         Button updateButton = findViewById(R.id.updateButton);
         TextView date = findViewById(R.id.detailedViewDate);
@@ -31,7 +29,6 @@ public class DetailedCalendar extends AppCompatActivity {
         TextView repeatType = findViewById(R.id.detailedViewRepeatType);
         TextView repeatUntil = findViewById(R.id.detailedViewRepeatUntil);
 
-        // Event-Werte setzen
         if (event != null) {
             date.setText(event.getDate());
             time.setText(event.getTime());
@@ -42,7 +39,6 @@ public class DetailedCalendar extends AppCompatActivity {
             repeatUntil.setText(event.getRepeatUntil() != null ? event.getRepeatUntil() : "");
         }
 
-        // Update-Button -> Fragment öffnen
         updateButton.setOnClickListener(v -> {
             UpdateEventFragment fragment = UpdateEventFragment.newInstance(event);
             getSupportFragmentManager()
@@ -52,7 +48,6 @@ public class DetailedCalendar extends AppCompatActivity {
                     .commit();
         });
 
-        // Delete-Button -> Fragment öffnen
         deleteButton.setOnClickListener(v -> {
             DeleteEventFragment fragment = DeleteEventFragment.newInstance(event);
             getSupportFragmentManager()
