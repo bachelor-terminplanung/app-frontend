@@ -15,11 +15,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class User {
-
+    static String IP_Address = "192.168.10.28";
     private static final OkHttpClient client = new OkHttpClient();
 
     public static void fetchUserId(Fragment fragment, String username, Runnable onSuccess) {
-        String url = "http://10.0.2.2:3000/user/id/" + username;
+        String url = "http://" + IP_Address + ":3000/user/id/" + username;
 
         Request request = new Request.Builder()
                 .url(url)
@@ -65,7 +65,7 @@ public class User {
     }
 
     public static void getColorById(int userId, ColorCallback callback) {
-        String url = "http://10.0.2.2:3000/user/color/" + userId;
+        String url = "http://" + IP_Address + ":3000/user/color/" + userId;
 
         Request request = new Request.Builder()
                 .url(url)

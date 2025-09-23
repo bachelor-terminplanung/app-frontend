@@ -27,7 +27,8 @@ import okhttp3.RequestBody;
 public class UpdateEventFragment extends Fragment {
 
     private static final String ARG_EVENT = "event";
-    private static final String BASE_URL = "http://10.0.2.2:3000/event";
+    static String IP_Address = "192.168.10.28";
+    private static final String BASE_URL = "http://" + IP_Address + ":3000/event";
     private static final OkHttpClient client = new OkHttpClient();
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 

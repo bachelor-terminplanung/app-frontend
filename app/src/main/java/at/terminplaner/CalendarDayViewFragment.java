@@ -36,7 +36,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class CalendarDayViewFragment extends Fragment {
-
+    String IP_Address = "192.168.10.28";
     private static final String ARG_YEAR = "year";
     private static final String ARG_MONTH = "month";
     private static final String ARG_DAY = "day";
@@ -173,7 +173,7 @@ public class CalendarDayViewFragment extends Fragment {
 
     private void loadEventsForDay(String date) {
         OkHttpClient client = new OkHttpClient();
-        String url = "http://10.0.2.2:3000/event/date";
+        String url = "http://" + IP_Address + ":3000/event/date";
 
         JSONObject jsonBody = new JSONObject();
         try {
