@@ -57,7 +57,7 @@ Dieses Cover wurde unter Verwendung von Ressourcen von Flaticon.com erstellt
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/zurueckpfeil"
+            android:src="@drawable/schwarzpfeil"
             android:theme="@style/BlueButton"
             android:contentDescription="Vorheriger Monat"
             android:scaleType="centerInside"
@@ -77,7 +77,7 @@ Dieses Cover wurde unter Verwendung von Ressourcen von Flaticon.com erstellt
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/pfeilweiter"
+            android:src="@drawable/schwarzpfeil2"
             android:contentDescription="Nächster Monat"
             android:scaleType="centerInside"
             android:padding="8dp"/>
