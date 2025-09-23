@@ -30,8 +30,7 @@ import yuku.ambilwarna.AmbilWarnaDialog;
  * create an instance of this fragment.
  */
 public class SignUpFragment extends Fragment {
-
-
+    static String IP_Address = "192.168.10.28";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -42,7 +41,7 @@ public class SignUpFragment extends Fragment {
     private String mParam2;
 
     private FragmentSignUpBinding fragmentSignUpBinding;
-    private static final String BASE_URL = "http://10.0.2.2:3000/register";
+    private static final String BASE_URL = "http://" + IP_Address + ":3000/register";
     private static final OkHttpClient client = new OkHttpClient();
 
     public SignUpFragment() {
@@ -200,7 +199,7 @@ public class SignUpFragment extends Fragment {
     }
 
     private void testExistingUser(String username) {
-        String url = "http://10.0.2.2:3000/user/id/" + username;
+        String url = "http://" + IP_Address + ":3000/user/id/" + username;
 
         Request request = new Request.Builder().url(url).get().build();
 

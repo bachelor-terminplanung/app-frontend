@@ -39,7 +39,7 @@ import okhttp3.RequestBody;
  * create an instance of this fragment.
  */
 public class CalendarFragment extends Fragment {
-
+    String IP_Address = "192.168.10.28";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -160,9 +160,10 @@ public class CalendarFragment extends Fragment {
             jsonBody.put("end", end);
         } catch (JSONException e) { e.printStackTrace(); }
 
+        String url = "http://" + IP_Address + ":3000/event/range";
         RequestBody body = RequestBody.create(jsonBody.toString(), JSON);
         Request request = new Request.Builder()
-                .url("http://10.0.2.2:3000/event/range")
+                .url(url)
                 .post(body)
                 .build();
 
