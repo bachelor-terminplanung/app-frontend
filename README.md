@@ -4,10 +4,8 @@ Diese Android-App ermöglicht es Benutzer:innen, Termine manuell einzugeben oder
 
 ## 🔧 Technologien
 
-- **Frontend**: Android (Java)
-- **Backend**: Node.js mit Express
+- **Frontend**: Android Studio (Java)
 - **Texterkennung**: Google Vision API
-- **Datenbank**: MySQL
 - **Kommunikation**: HTTP (REST API)
 
 ## 🧠 Hauptfunktionen
@@ -19,9 +17,10 @@ Diese Android-App ermöglicht es Benutzer:innen, Termine manuell einzugeben oder
 
 ## 📷 OCR-Funktion
 
-- Bildaufnahme aus Galerie
+- Bildaufnahme mittels Kamera
+- bereits gespeichertes Bild verwenden
 - Texterkennung mit Google Vision API
-- Extraktion von Datum und Uhrzeit aus erkannten Texten
+- Extraktion von Datum, Uhrzeit und BEschreibung aus erkannten Texten
 - Automatischer Vorschlag für Termineintrag basierend auf OCR-Text
 
 ## ▶️ Installation & Ausführen
@@ -31,7 +30,7 @@ Diese Android-App ermöglicht es Benutzer:innen, Termine manuell einzugeben oder
 1. Projekt in Android Studio öffnen
 2. Kamera- und Internetberechtigungen setzen
 3. API-Key für Google Vision API in `CloudOCR.java` einfügen
-4. IP-Adresse setzen im VisionApiHelper
+4. IP-Adresse in sämtlichen Klassen setzen
 5. Emulator oder echtes Gerät starten
 6. App ausführen
 
