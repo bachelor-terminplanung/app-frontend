@@ -25,6 +25,7 @@ public class CloudOCR extends AppCompatActivity {
     private TextView imagePlaceholderText;
     private ImageView imageView;
     private TextView resultText;
+    private TextView imageHint;
     private String apiKey = "";
 
     @SuppressLint("MissingInflatedId")
@@ -35,6 +36,7 @@ public class CloudOCR extends AppCompatActivity {
         imageView = findViewById(R.id.imageView);
         resultText = findViewById(R.id.resultText);
         imagePlaceholderText = findViewById(R.id.imagePlaceholderText);
+        imageHint = findViewById(R.id.imageHint);
 
         Button selectImage = findViewById(R.id.selectImage);
         selectImage.setOnClickListener(v -> {
@@ -61,6 +63,7 @@ public class CloudOCR extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent image) {
         super.onActivityResult(requestCode, resultCode, image);
         imagePlaceholderText.setVisibility(GONE);
+        imageHint.setVisibility(GONE);
 
         if (requestCode == SELECT_IMAGE && resultCode == RESULT_OK && image != null) {
             Uri imageUri = image.getData();

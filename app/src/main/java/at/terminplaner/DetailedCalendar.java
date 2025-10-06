@@ -2,6 +2,7 @@ package at.terminplaner;
 
 import static at.terminplaner.UpdateEvent.parseDurationToMinutes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -56,5 +57,29 @@ public class DetailedCalendar extends AppCompatActivity {
                     .addToBackStack(null)
                     .commit();
         });
+    }
+
+    private void startIntent(TextView date, TextView time, TextView description, TextView duration, TextView isRepeating, TextView repeatType, TextView repeatUntil, Class intentReceiverClass) {
+        String dateS = String.valueOf(date.getText());
+        String timeS = (String) time.getText();
+        String descriptionS = (String) description.getText();
+        int durationS = parseDurationToMinutes(duration.getText().toString().trim());
+        boolean isRepeatingS = Boolean.parseBoolean(isRepeating.getText().toString().trim());
+        String repeatTypeS = (String) repeatType.getText();
+        String repeatUntilS = (String) repeatUntil.getText();
+
+        Event updatedEvent = new Event(
+                descriptionS,
+                dateS,
+                timeS,
+                durationS,
+                isRepeatingS,
+                repeatTypeS,
+                repeatUntilS
+        );
+
+        Intent intent = new Intent(this, intentReceiverClass);
+        intent.putExtra("event", updatedEvent);
+        startActivity(intent);
     }
 }

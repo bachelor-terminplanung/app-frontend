@@ -5,15 +5,19 @@ import android.icu.util.Calendar;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,8 +52,9 @@ public class CalendarFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private Button ocrButton;
+    private ImageButton ocrButton;
     private Button detailButton;
+    private RelativeLayout calendarBackground;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -57,9 +62,9 @@ public class CalendarFragment extends Fragment {
 
     private GridView gridView;
     private TextView monthYearText;
-    private Button prevMonth;
-    private Button nextMonth;
-    private Button logoutButton;
+    private ImageButton prevMonth;
+    private ImageButton nextMonth;
+    private ImageButton logoutButton;
     private int year;
     private int month;
 
@@ -120,6 +125,8 @@ public class CalendarFragment extends Fragment {
         prevMonth = view.findViewById(R.id.prevMonth);
         nextMonth = view.findViewById(R.id.nextMonth);
 
+        calendarBackground = view.findViewById(R.id.calendarBackground);
+
         Calendar today = Calendar.getInstance();
         year = today.get(Calendar.YEAR);
         month = today.get(Calendar.MONTH);
@@ -151,7 +158,7 @@ public class CalendarFragment extends Fragment {
         // Datum für den Monatsbereich
         String start = year + "-" + String.format("%02d", month + 1) + "-01";
         String end = year + "-" + String.format("%02d", month + 1) + "-" + getLastDayOfMonth(year, month);
-
+        setCalendarBackground(month);
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
         JSONObject jsonBody = new JSONObject();
@@ -201,7 +208,21 @@ public class CalendarFragment extends Fragment {
 
         // Monat-Jahr-Text
         String monthName = new DateFormatSymbols().getMonths()[month];
+
         monthYearText.setText(monthName + " " + year);
+    }
+
+    private void setCalendarBackground(int month) {
+        Log.d("month", "setCalendarBackground: " + month);
+        if (month >= 2 && month <= 4) {
+            calendarBackground.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.spring));
+        } else if (month >= 5 && month <= 7) {
+            calendarBackground.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.sommer));
+        } else if (month >= 8 && month <= 10) {
+            calendarBackground.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.herbst));
+        } else {
+            calendarBackground.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.winter));
+        }
     }
 
     private int getLastDayOfMonth(int year, int month) {
