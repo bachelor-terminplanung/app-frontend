@@ -9,8 +9,8 @@
 
     <TextView
         android:id="@+id/textView_login"
-        android:layout_width="127dp"
-        android:layout_height="39dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="166dp"
         android:layout_marginTop="128dp"
         android:layout_marginEnd="166dp"
@@ -59,6 +59,7 @@
         android:clickable="true"
         android:focusable="true"
         android:text="Registrieren"
+        android:textColor="@color/my_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView_no_account"
@@ -86,7 +87,7 @@
         android:layout_marginEnd="57dp"
         android:layout_marginBottom="15dp"
         android:ems="10"
-        android:hint="Ntuzername"
+        android:hint="Nutzername"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/editText_password_login"
         app:layout_constraintEnd_toEndOf="parent"

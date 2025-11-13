@@ -41,7 +41,7 @@
 
     <TextView
         android:id="@+id/textView_sign_up"
-        android:layout_height="47dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="128dp"
         android:layout_marginTop="128dp"
         android:layout_marginEnd="128dp"
@@ -52,7 +52,8 @@
         app:layout_constraintBottom_toTopOf="@+id/textView_create_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"/>
 
     <TextView
         android:id="@+id/textView_create_account"
@@ -71,7 +72,7 @@
         android:id="@+id/textView_have_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="106dp"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="21dp"
         android:layout_marginBottom="105dp"
         android:text="Sie haben schon einen Account?"
@@ -87,15 +88,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginTop="21dp"
-        android:layout_marginEnd="111dp"
+        android:layout_marginEnd="100dp"
         android:layout_marginBottom="105dp"
         android:clickable="true"
         android:focusable="true"
         android:text="Einloggen"
+        android:textColor="@color/my_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView_have_account"
-        app:layout_constraintTop_toBottomOf="@+id/button_sign_up" />
+        app:layout_constraintTop_toBottomOf="@+id/button_sign_up"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/button_sign_up"
