@@ -16,7 +16,7 @@
         android:layout_marginEnd="57dp"
         android:layout_marginBottom="9dp"
         android:ems="10"
-        android:hint="Full name"
+        android:hint="Vor- und Nachname"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/layout_username_color"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +32,7 @@
         android:layout_marginEnd="57dp"
         android:layout_marginBottom="15dp"
         android:ems="10"
-        android:hint="Confirm your Password"
+        android:hint="Passwort bestätigen"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/button_sign_up"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,18 +41,16 @@
 
     <TextView
         android:id="@+id/textView_sign_up"
-        android:layout_width="100dp"
         android:layout_height="47dp"
-        android:layout_marginStart="155dp"
+        android:layout_marginStart="128dp"
         android:layout_marginTop="128dp"
-        android:layout_marginEnd="156dp"
+        android:layout_marginEnd="128dp"
         android:layout_marginBottom="14dp"
-        android:text="Sign Up"
+        android:text="Registrieren"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textView_create_account"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,11 +59,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="125dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="126dp"
-        android:text="First Create Your Account"
+        android:text="Bitte erstellen Sie einene Account"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_sign_up" />
 
@@ -76,11 +74,12 @@
         android:layout_marginStart="106dp"
         android:layout_marginTop="21dp"
         android:layout_marginBottom="105dp"
-        android:text="Already have an account?"
+        android:text="Sie haben schon einen Account?"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textView_to_login"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_sign_up" />
+        app:layout_constraintTop_toBottomOf="@+id/button_sign_up"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textView_to_login"
@@ -92,7 +91,7 @@
         android:layout_marginBottom="105dp"
         android:clickable="true"
         android:focusable="true"
-        android:text="Login"
+        android:text="Einloggen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView_have_account"
@@ -105,7 +104,7 @@
         android:layout_marginStart="57dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="58dp"
-        android:text="Sign Up"
+        android:text="Registrieren"
         android:theme="@style/BlueButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -127,13 +126,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Username"
+            android:hint="Nutzername"
             android:inputType="text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/view_color_picker"
-            app:layout_constraintHorizontal_weight="1" />
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/view_color_picker"
@@ -179,7 +178,7 @@
         android:layout_marginEnd="57dp"
         android:layout_marginBottom="9dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="Passwort"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/editText_confirm_password"
         app:layout_constraintEnd_toEndOf="parent"
