@@ -65,7 +65,7 @@ public class User {
     }
 
     public static void getColorById(int userId, ColorCallback callback) {
-        String url = "http://" + IP_Address + ":3000/user/color/" + userId;
+        String url = "http://" + IP_Address + ":3000/user/" + userId + "/color";
 
         Request request = new Request.Builder()
                 .url(url)
