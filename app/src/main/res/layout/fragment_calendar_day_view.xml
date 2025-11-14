@@ -20,12 +20,14 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-            <Button
+            <ImageButton
                 android:id="@+id/buttonBackToCalendar"
-                android:layout_width="62dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#4285F4"
-                android:text="&lt;" />
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/schwarzpfeil"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="centerInside"
+                android:padding="8dp"/>
 
             <TextView
                 android:id="@+id/dayHeaderTextView"
