@@ -100,7 +100,8 @@ public class EventPopUp {
             String descriptionInput = inputDescription.getText().toString();
             String dateInput = inputEventDate.getText().toString();
             String timeInput = inputStartTime.getText().toString();
-            int duration = Integer.parseInt(inputDuration.getText().toString());
+            String duration = inputDuration.getText().toString();
+            //int duration = Integer.parseInt(inputDuration.getText().toString());
             boolean isRepeating = switchIsRepeating.isChecked();
             String repeatType = spinnerRepeatType.getSelectedItem().toString();
             String repeatUntil = inputRepeatUntil.getText().toString();

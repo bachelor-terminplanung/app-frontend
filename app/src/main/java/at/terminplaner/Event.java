@@ -24,12 +24,12 @@ public class Event implements Parcelable {
     public String description;
     public String date;
     public String time;
-    public int duration;
+    public String duration;
     public boolean isRepeating;
     public String repeatType;
     public String repeatUntil;
 
-    public Event(String description, String date, String time, int duration, boolean isRepeating, String repeatType, String repeatUntil) {
+    public Event(String description, String date, String time, String duration, boolean isRepeating, String repeatType, String repeatUntil) {
         this.description = description;
         this.date = date;
         this.time = time;
@@ -43,7 +43,7 @@ public class Event implements Parcelable {
         description = in.readString();
         date = in.readString();
         time = in.readString();
-        duration = in.readInt();
+        duration = in.readString();
         isRepeating = in.readByte() != 0;
         repeatType = in.readString();
         repeatUntil = in.readString();
@@ -65,7 +65,7 @@ public class Event implements Parcelable {
         return description;
     }
 
-    public int getDuration() {
+    public String getDuration() {
         return duration;
     }
 
@@ -173,7 +173,7 @@ public class Event implements Parcelable {
         parcel.writeString(description);
         parcel.writeString(date);
         parcel.writeString(time);
-        parcel.writeInt(duration);
+        parcel.writeString(duration);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             parcel.writeBoolean(isRepeating);
         }

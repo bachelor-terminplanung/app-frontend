@@ -63,7 +63,8 @@ public class DetailedCalendar extends AppCompatActivity {
         String dateS = String.valueOf(date.getText());
         String timeS = (String) time.getText();
         String descriptionS = (String) description.getText();
-        int durationS = parseDurationToMinutes(duration.getText().toString().trim());
+        String durationS = (String) duration.getText();
+        //int durationS = parseDurationToMinutes(duration.getText().toString().trim());
         boolean isRepeatingS = Boolean.parseBoolean(isRepeating.getText().toString().trim());
         String repeatTypeS = (String) repeatType.getText();
         String repeatUntilS = (String) repeatUntil.getText();

@@ -120,7 +120,7 @@ public class VisionApiHelper {
         return null;
     }
 
-    public static void sendEvent(CloudOCR cloudOCR, String description, String date, String time, int duration, boolean isRepeating, String repeatType, String repeatUntil) {
+    public static void sendEvent(CloudOCR cloudOCR, String description, String date, String time, String duration, boolean isRepeating, String repeatType, String repeatUntil) {
         try {
             URL url = new URL("http://" + IP_Address + ":3000/event");
             int userId = ((MyApp) cloudOCR.getApplication()).getUserId();
@@ -182,7 +182,7 @@ public class VisionApiHelper {
                 Log.d("times", times.isEmpty() ? "" : times.get(0));
                 String date = dates.isEmpty() ? "" : dates.get(0);
                 String time = times.isEmpty() ? "" : times.get(0);
-                Event event = new Event(detectedText,date, time, 0,false, "","");
+                Event event = new Event(detectedText,date, time, "00:00:00",false, "","");
                 cloudOCR.runOnUiThread(() -> EventPopUp.showDetailedPopup(cloudOCR, event, true, false, inputEvent -> {
                     // callback ?
                     cloudOCR.checkAndHandleDuplicate(inputEvent);
