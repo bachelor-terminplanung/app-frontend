@@ -46,7 +46,7 @@ public class CloudOCR extends AppCompatActivity {
 
         Button insertManuallyButton = findViewById(R.id.insertManually);
         insertManuallyButton.setOnClickListener(v -> {
-            Event event = new Event("", "","", 0, false, "", "");
+            Event event = new Event("", "","", "00:00:00", false, "", "");
             EventPopUp.showDetailedPopup(CloudOCR.this, event, false, false, inputEvent -> {
                 checkAndHandleDuplicate(inputEvent);
             });

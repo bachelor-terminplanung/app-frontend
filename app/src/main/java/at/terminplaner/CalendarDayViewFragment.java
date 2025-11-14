@@ -280,7 +280,7 @@ public class CalendarDayViewFragment extends Fragment {
                         if (!shouldShow) continue;
 
                         Event event = new Event(descriptionText, eventDate, startTime,
-                                0, isRepeating, repeatType, repeatUntil);
+                                "00:00:00", isRepeating, repeatType, repeatUntil);
 
                         // User-Farbe laden
                         if (userId != -1) {
