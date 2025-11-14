@@ -14,6 +14,10 @@ Diese Android-App ermöglicht es Benutzer:innen, Termine manuell einzugeben oder
 - Wiederholende Termine mit verschiedenen Wiederholungsintervallen
 - Visuelle Oberfläche zur Eingabe von Datum, Uhrzeit, Dauer usw.
 - Speicherung der Termine auf dem Server
+- Kalenderansicht mit sich verändernden Hintergründen
+- userspezifisch gekennzeichnete Termine
+- Tagesansicht vom Kalender
+- detaillierte Ansicht von Terminen
 
 ## 📷 OCR-Funktion
 
@@ -33,4 +37,6 @@ Diese Android-App ermöglicht es Benutzer:innen, Termine manuell einzugeben oder
 4. IP-Adresse in sämtlichen Klassen setzen
 5. Emulator oder echtes Gerät starten
 6. App ausführen
+7. Wenn noch kein Account vorhanden ist, registrieren
+8. Sonst einloggen
 
