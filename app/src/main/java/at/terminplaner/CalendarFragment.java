@@ -57,7 +57,7 @@ public class CalendarFragment extends Fragment {
     private RelativeLayout calendarBackground;
 
     public CalendarFragment() {
-        // Required empty public constructor
+
     }
 
     private GridView gridView;
@@ -155,7 +155,6 @@ public class CalendarFragment extends Fragment {
     }
 
     private void updateCalendar() {
-        // Datum für den Monatsbereich
         String start = year + "-" + String.format("%02d", month + 1) + "-01";
         String end = year + "-" + String.format("%02d", month + 1) + "-" + getLastDayOfMonth(year, month);
         setCalendarBackground(month);
@@ -188,12 +187,11 @@ public class CalendarFragment extends Fragment {
                     Set<Integer> daysWithEvents = new HashSet<>();
                     for (int i = 0; i < events.length(); i++) {
                         JSONObject obj = events.getJSONObject(i);
-                        String date = obj.getString("event_date"); // z.B. "2025-09-22"
+                        String date = obj.getString("event_date");
                         int day = Integer.parseInt(date.split("-")[2]);
                         daysWithEvents.add(day);
                     }
 
-                    // Adapter auf UI-Thread aktualisieren
                     requireActivity().runOnUiThread(() -> {
                         CustomCalendarAdapter adapter = new CustomCalendarAdapter(requireContext(), year, month, -1, getParentFragmentManager());
                         adapter.setDaysWithEvents(daysWithEvents);
@@ -206,7 +204,7 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-        // Monat-Jahr-Text
+        //Monat-Jahr-Text
         String monthName = new DateFormatSymbols().getMonths()[month];
 
         monthYearText.setText(monthName + " " + year);
