@@ -32,7 +32,6 @@ import yuku.ambilwarna.AmbilWarnaDialog;
 public class SignUpFragment extends Fragment {
     static String IP_Address = "172.20.10.2";
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -45,7 +44,7 @@ public class SignUpFragment extends Fragment {
     private static final OkHttpClient client = new OkHttpClient();
 
     public SignUpFragment() {
-        // Required empty public constructor
+
     }
 
     /**

@@ -29,7 +29,6 @@ import okhttp3.Response;
 public class LoginFragment extends Fragment {
     static String IP_Address = "192.168.10.28";
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -42,7 +41,7 @@ public class LoginFragment extends Fragment {
     private static final OkHttpClient client = new OkHttpClient();
 
     public LoginFragment() {
-        // Required empty public constructor
+
     }
 
     /**
