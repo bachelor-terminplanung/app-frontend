@@ -87,19 +87,16 @@ public class CustomCalendarAdapter extends BaseAdapter {
             dayView.setTextColor(Color.DKGRAY);
             dayLayout.setBackgroundColor(Color.WHITE);
 
-            // Heute markieren
             if (year == todayYear && month == todayMonth && dayNumber == todayDay) {
                 dayLayout.setBackgroundResource(R.drawable.circle_today);
                 dayView.setTextColor(Color.BLACK);
             }
 
-            // Gewünschter Tag
             if (desiredDay > 0 && dayNumber == desiredDay) {
                 dayLayout.setBackgroundColor(Color.parseColor("#BF9A8E"));
                 dayView.setTextColor(Color.WHITE);
             }
 
-            // Klick auf Tag
             int finalDayNumber = dayNumber;
             dayLayout.setOnClickListener(v -> {
                 Bundle args = new Bundle();
@@ -111,7 +108,6 @@ public class CustomCalendarAdapter extends BaseAdapter {
                 navController.navigate(R.id.action_calendarFragment_to_calendarDayViewFragment, args);
             });
 
-            // Punkt für Events
             if (daysWithEvents.contains(dayNumber)) {
                 View dot = new View(context);
                 dot.setBackgroundResource(R.drawable.circle_event_calendar);
