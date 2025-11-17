@@ -37,6 +37,4 @@ Diese Android-App ermöglicht es Benutzer:innen, Termine manuell einzugeben oder
 4. IP-Adresse in sämtlichen Klassen setzen
 5. Emulator oder echtes Gerät starten
 6. App ausführen
-7. Wenn noch kein Account vorhanden ist, registrieren
-8. Sonst einloggen
 
