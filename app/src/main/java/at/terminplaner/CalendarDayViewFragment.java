@@ -83,14 +83,12 @@ public class CalendarDayViewFragment extends Fragment {
                 requireActivity().getSupportFragmentManager().popBackStack()
         );
 
-        //Datum anzeigen
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
         String dayName = new SimpleDateFormat("EEEE", Locale.GERMAN).format(calendar.getTime());
         String dateString = String.format(Locale.getDefault(), "%02d.%02d.%04d", day, month + 1, year);
         binding.dayHeaderTextView.setText(dayName + ", " + dateString);
 
-        //Uhrzeit-Slots
         String[] hours = {"06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00"};
         LinearLayout timeSlotsLayout = binding.timeSlotsLayout;
 
@@ -125,7 +123,6 @@ public class CalendarDayViewFragment extends Fragment {
     }
 
     private void addEventToSlot(Event event, String userColor) {
-        //Event horizontal layout
         LinearLayout eventLayout = new LinearLayout(requireContext());
         eventLayout.setOrientation(LinearLayout.HORIZONTAL);
         eventLayout.setGravity(Gravity.CENTER_VERTICAL);
@@ -136,7 +133,6 @@ public class CalendarDayViewFragment extends Fragment {
         eventLayoutParams.setMargins(0, 4, 0, 4);
         eventLayout.setLayoutParams(eventLayoutParams);
 
-        //Farbkreis
         View circle = new View(requireContext());
         int sizeInPx = (int) (16 * getResources().getDisplayMetrics().density); // 16dp
         LinearLayout.LayoutParams circleParams = new LinearLayout.LayoutParams(sizeInPx, sizeInPx);
@@ -149,7 +145,6 @@ public class CalendarDayViewFragment extends Fragment {
             circle.setBackgroundTintList(ColorStateList.valueOf(Color.BLUE));
         }
 
-        //Beschreibung
         TextView description = new TextView(requireContext());
         description.setText(event.getDescription());
         description.setTextSize(16f);
@@ -159,7 +154,6 @@ public class CalendarDayViewFragment extends Fragment {
         eventLayout.addView(circle);
         eventLayout.addView(description);
 
-        //Detailansicht öffnen
         eventLayout.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), DetailedCalendar.class);
             intent.putExtra("event", event);
@@ -228,7 +222,6 @@ public class CalendarDayViewFragment extends Fragment {
                         String repeatType = obj.optString("repeat_type", null);
                         String repeatUntil = obj.optString("repeat_until", null);
 
-                        // Prüfen, ob Event auf diesen Tag fällt
                         boolean shouldShow = false;
 
                         if (!isRepeating) {
@@ -282,7 +275,6 @@ public class CalendarDayViewFragment extends Fragment {
                         Event event = new Event(descriptionText, eventDate, startTime,
                                 "00:00:00", isRepeating, repeatType, repeatUntil);
 
-                        // User-Farbe laden
                         if (userId != -1) {
                             User.getColorById(userId, new User.ColorCallback() {
                                 @Override
